@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Sparta Vocabulary Notebook</title>
+    <title> {% block title %}{% endblock %}</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -71,70 +72,21 @@
         }
     </style>
     <script>
-        let word = '{{ word }}'
-        $(document).ready(function () {
-            // get_definitions()
-        })
 
-        function get_definitions() {
-            $.ajax({
-                type: "GET",
-                url: `https://owlbot.info/api/v4/dictionary/${word}`,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", "Token  c7e433d6b1e151661f35e6260ea0d043f8b60da6");
-                },
-                data: {},
-                error: function (xhr, status, error) {
-                    alert("에러 발생!");
-                },
-                success: function (response) {
-                    console.log(response)
-
-                    $('#word').text(response["word"])
-                    if (response["pronuncication"] == null) {
-                        $('#pronunciation').text("")
-                    } else {
-                        $('#pronunciation').text(`/${response["pronunciation"]}/`)
-                    }
-                    let definitions = response["definitions"]
-                    $("#definitions").empty()
-                    for (let i = 0; i < definitions.length; i++) {
-                        let definition = definitions[i]
-                        let temp = ""
-
-                        if (definition["example"] == "null") {
-                            temp = `     <div style="padding:10px">
-                                                <i>${definition["type"]}</i>
-                                                <br>${definition["definition"]}<br>
-                                                 <span class="example">${definition["example"]}</span>
-                                            </div>`
-
-                        } else {
-
-                            temp = `     <div style="padding:10px">
-                                                <i>${definition["type"]}</i>
-                                                <br>${definition["definition"]}<br>
-                                                <span class="example">${definition["example"]}</span>
-                                            </div>`
-                        }
-                        $("#definitions").append(temp)
-                    }
-
-                }
-            })
-        }
     </script>
+  {% endblock %}
 </head>
 <body>
+
 <div class="wrap">
-    <div class="banner" onclick="window.location.href = '/'">
+
     </div>
 
     <div class="container">
         <div class="d-flex justify-content-between align-items-end">
             <div>
 
-                <h1 id="word" style="display: inline;"> This is home </h1>
+                <h1 id="word" style="display: inline;">     {% block content %}{% endblock %} </h1>
 
 
 
@@ -148,8 +100,7 @@
         <div id="definitions">
 
             <div style="padding:10px">
-                <i>  Contents </i>
-                <a href="Login.html"> login </a>
+                <i>      {% block content2 %}{% endblock %} </i>
 
 
 
