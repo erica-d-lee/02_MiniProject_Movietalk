@@ -9,7 +9,7 @@
     height: 200px;
 
     background-color: white;
-    background-image: url('{{ url_for("static", filename="Movie Talk.png") }}');
+    background-image: url('/static/movie.png');
 
     background-position: center;
     background-size: contain;
