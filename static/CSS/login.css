@@ -1,5 +1,23 @@
+@media screen and (min-width: 1408px) {
+    .container:not(.is-max-desktop):not(.is-max-widescreen) {
+        max-width: 800px;
+    }
+}
+
+@media screen and (min-width: 1216px) {
+    .container:not(.is-max-desktop) {
+        max-width: 800px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .container {
+        max-width: 800px;
+    }
+}
+
 .wrap {
-    background-color: rgb(252, 207, 19);
+    background-color: rgb(252, 207, 109);
     min-height: 100vh;
     padding-bottom: 50px;
 }
@@ -45,4 +63,38 @@ span.example {
     background-color: transparent;
     background-image: none;
     border-color: #e8344e;
+}
+
+.media-content {
+    padding: 1rem 1.5rem;
+    max-width: 500px;
+    margin: auto;
+}
+
+.field {
+    margin-bottom: 0.75rem;
+}
+
+.content {
+    margin-bottom: 0.75rem;
+}
+
+.content:not(:last-child){
+    margin-bottom: 0.75rem;
+}
+
+.is-color {
+    color: #4F5A5F !important;
+}
+
+.button.is-color {
+    background-color: #4F5A5F;
+    border-color: transparent;
+    color: #fff !important;
+}
+
+.button.is-color.is-outlined {
+    background-color: transparent;
+    border-color: #4F5A5F;
+    color: #4F5A5F !important;
 }
