@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title> Movie Talk </title>
 
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <!-- 구글 폰트 -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -21,6 +26,10 @@
             crossorigin="anonymous"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
+        * {
+            font-family: 'Noto Serif KR', serif;
+        }
+
         .wrap {
             background-color: rgb(252, 207, 109);
             min-height: 100vh;
@@ -44,11 +53,12 @@
         .container {
             width: 80%;
             max-width: 800px;
+            height: 450px;
             margin: 30px auto;
             padding: 20px;
             background-color: white;
 
-            border: solid 1px gray;
+            border: thick double darkgray;
             border-radius: 10px;
         }
 
@@ -57,18 +67,27 @@
             font-size: 14px;
         }
 
-        .btn-sparta {
-            color: #fff;
-            background-color: #e8344e;
-            border-color: #e8344e;
+        .movieimg {
+            height: 250px;
+            width: 200px;
+            float: left;
+
+            background-image: url('https://movie-phinf.pstatic.net/20210512_139/1620799657168vGIqq_JPEG/movie_image.jpg');
+            background-position: center top;
+            background-size: contain;
+            background-repeat: no-repeat;
         }
 
-        .btn-outline-sparta {
-            color: #e8344e;
-            background-color: transparent;
-            background-image: none;
-            border-color: #e8344e;
+        .movieinfo {
+            height: 250px;
+            width: auto;
+            margin-left: 200px;
         }
+
+        .link {
+            margin-top: 15px;
+        }
+
     </style>
     <script>
 
@@ -76,24 +95,40 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="banner" onclick="window.location.href = '/'">
+    <div class="banner" onclick="window.location.href = '/'"></div>
+    <div class="container">
+        <div class="movieimg"></div>
+        <div class="movieinfo">
+            <h3><a style="color: orangered; font-weight: bold"
+                   href="https://movie.naver.com/movie/bi/mi/basic.nhn?code=187322"><u>크루엘라</u></a></h3>
+            <p style="margin-top: 10px">장르: 드라마, 범죄, 코미디 | 개봉일: 2021-05-26<br>감독: 크레이그 질레스피 | 출연: 엠마 스톤</p>
+            <p>처음부터 난 알았어. 내가 특별하단 걸. 그게 불편한 인간들도 있겠지만 모두의 비위를 맞출 수는 없잖아? 그러다 보니 결국, 학교를 계속 다닐 수가 없었지. 우여곡절 런던에 오게 된 나,
+                에스텔라는 재스퍼와 호레이스를 운명처럼 만났고
+                나의 뛰어난 패션 감각을 이용해 완벽한 변장과 빠른 손놀림으로 런던 거리를 싹쓸이 했어.</p>
+        </div>
+        <div class="link">
+            <a href="https://www.youtube.com/watch?v=yfSMTFzw-Kw"><u>관련 영상 링크: 유튜브 '크루엘라'</u></a>
+        </div>
+        <hr>
+        <div class="comments">
+            <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
+                <mark>닉네임1</mark>
+                : 댓글1
+            </p>
+            <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
+                <mark>닉네임2</mark>
+                : 댓글2
+            </p>
+        </div>
     </div>
-
     <div class="container">
         <div class="d-flex justify-content-between align-items-end">
             <div>
-
                 <h1 id="word" style="display: inline;"> This is home </h1>
-
-
-
             </div>
-
-            <button id="btn-delete" class="btn btn-sparta btn-lg">
-                <i class="fa fa-heart" aria-hidden="true"></i>
-            </button>
         </div>
         <hr>
+<<<<<<< HEAD
         <div id="definitions">
 
             <div style="padding:10px">
@@ -105,10 +140,17 @@
 
 
 
+=======
+    </div>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end">
+            <div>
+                <h1 id="word" style="display: inline;"> This is home </h1>
+>>>>>>> 7c9fccb495475087da21d916e46dbbe8bad2b3b1
             </div>
-
         </div>
+        <hr>
     </div>
 </div>
 </body>
-</html>def home():
+</html>
