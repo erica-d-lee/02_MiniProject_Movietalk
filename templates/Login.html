@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 
 
-{% block title %} Login {% endblock %}
 
+    {% block stylesheet %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    {% endblock %}
+
+{% block title %} Login {% endblock %}
 
 
 {% block content %}
@@ -11,6 +15,6 @@
       Hi
     </p>
 
-    <p>  hi</p>
+    <p>  hi22222</p>
 {% endblock %}
 
