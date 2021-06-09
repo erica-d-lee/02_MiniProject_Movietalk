@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0"/>
     <title> Movie Talk </title>
 
-    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/main.css') }}">
     <!-- 구글 폰트 -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
@@ -33,6 +33,7 @@
         .wrap {
             background-color: rgb(252, 207, 109);
             min-height: 100vh;
+            height: auto;
             padding-bottom: 50px;
         }
 
@@ -54,17 +55,12 @@
             width: 80%;
             max-width: 800px;
             height: 450px;
-            margin: 30px auto;
+            margin: 30px auto 30px auto;
             padding: 20px;
             background-color: white;
 
             border: thick double darkgray;
-            border-radius: 10px;
-        }
-
-        span.example {
-            color: gray;
-            font-size: 14px;
+            border-radius: 30px;
         }
 
         .movieimg {
@@ -72,7 +68,6 @@
             width: 200px;
             float: left;
 
-            background-image: url('https://movie-phinf.pstatic.net/20210512_139/1620799657168vGIqq_JPEG/movie_image.jpg');
             background-position: center top;
             background-size: contain;
             background-repeat: no-repeat;
@@ -81,11 +76,22 @@
         .movieinfo {
             height: 250px;
             width: auto;
-            margin-left: 200px;
+            margin-left: 230px;
+            word-break: break-all;
         }
 
         .link {
             margin-top: 15px;
+        }
+
+        .line {
+            color: rgb(252, 207, 109);
+            font-weight: bold;
+        }
+
+        .text {
+            margin-top: 10px;
+            font-size: 17px;
         }
 
     </style>
@@ -95,47 +101,38 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="banner" onclick="window.location.href = '/'"></div>
-    <div class="container">
-        <div class="movieimg"></div>
-        <div class="movieinfo">
-            <h3><a style="color: orangered; font-weight: bold"
-                   href="https://movie.naver.com/movie/bi/mi/basic.nhn?code=187322"><u>크루엘라</u></a></h3>
-            <p style="margin-top: 10px">장르: 드라마, 범죄, 코미디 | 개봉일: 2021-05-26<br>감독: 크레이그 질레스피 | 출연: 엠마 스톤</p>
-            <p>처음부터 난 알았어. 내가 특별하단 걸. 그게 불편한 인간들도 있겠지만 모두의 비위를 맞출 수는 없잖아? 그러다 보니 결국, 학교를 계속 다닐 수가 없었지. 우여곡절 런던에 오게 된 나,
-                에스텔라는 재스퍼와 호레이스를 운명처럼 만났고
-                나의 뛰어난 패션 감각을 이용해 완벽한 변장과 빠른 손놀림으로 런던 거리를 싹쓸이 했어.</p>
-        </div>
-        <div class="link">
-            <a href="https://www.youtube.com/watch?v=yfSMTFzw-Kw"><u>관련 영상 링크: 유튜브 '크루엘라'</u></a>
-        </div>
-        <hr>
-        <div class="comments">
-            <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
-                <mark>닉네임1</mark>
-                : 댓글1
-            </p>
-            <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
-                <mark>닉네임2</mark>
-                : 댓글2
-            </p>
-        </div>
-    </div>
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-end">
-            <div>
-                <h1 id="word" style="display: inline;"> This is home </h1>
+    <div class="banner" onclick="window.location.href = '/main'"></div>
+    {% for movie in movies %}
+    <div>
+        <div id="container" class="container">
+            <div class="movieimg" style="background-image: url('{{ movie.imgurl }}');"></div>
+            <div class="movieinfo">
+                <h3><a style="color: orangered; font-weight: bold"
+                       href="#"><u>{{ movie.title }}</u></a></h3>
+                <p class="text">장르: {{ movie.info.genre }}<span class="line">  ||  </span>
+                    개봉일: {{ movie.info.date }}<br>감독: {{ movie.info.director }}<span class="line">  ||  </span>출연: {{
+                    movie.info.star }}</p>
+                <p style="overflow: hidden">{{ movie.info.desc }}</p>
+            </div>
+            <div class="link">
+                <a id="link" style="color: darkorange" href="https://www.youtube.com{{ movie.link }}">
+                    <i class="fa fa-youtube-play" aria-hidden="true" style="color: orangered; margin-right: 5px"></i><u>'{{
+                    movie.title }}' 유튜브 영상 보러 가기</u>
+                </a>
+            </div>
+            <hr>
+            <div id="comments" class="comments">
+                <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
+                    <mark>{{ movie.comments[0].nick }}</mark>
+                    : {{ movie.comments[0].comment }}
+                </p>
+                <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
+                    <mark>{{ movie.comments[1].nick }}</mark>
+                    : {{ movie.comments[1].comment }}
+                </p>
             </div>
         </div>
-        <hr>
-    </div>
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-end">
-            <div>
-                <h1 id="word" style="display: inline;"> This is home </h1>
-            </div>
-        </div>
-        <hr>
+        {% endfor %}
     </div>
 </div>
 </body>
