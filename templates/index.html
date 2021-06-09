@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -56,7 +58,7 @@
             max-width: 800px;
             height: 450px;
             margin: 30px auto 30px auto;
-            padding: 20px;
+            padding: 30px;
             background-color: white;
 
             border: thick double darkgray;
@@ -78,6 +80,13 @@
             width: auto;
             margin-left: 230px;
             word-break: break-all;
+
+            display: -webkit-box;
+            word-wrap: break-word;
+            -webkit-line-clamp: 7;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .link {
@@ -94,6 +103,18 @@
             font-size: 17px;
         }
 
+        .comments {
+            width: 600px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .btn btn-outline-warning {
+            float: right;
+            display: block;
+        }
+
     </style>
     <script>
 
@@ -102,6 +123,7 @@
 <body>
 <div class="wrap">
     <div class="banner" onclick="window.location.href = '/'"></div>
+    <button type="button" class="btn btn-outline-secondary">영화 추천하기</button>
     {% for movie in movies %}
     <div>
         <div id="container" class="container">
@@ -109,14 +131,14 @@
             <div class="movieinfo">
                 <h3><a style="color: orangered; font-weight: bold"
                        href="#"><u>{{ movie.title }}</u></a></h3>
-                <p class="text">장르: {{ movie.info.genre }}<span class="line">  ||  </span>
+                <p class="text" style="width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    장르: {{ movie.info.genre }}<span class="line">  ||  </span>
                     개봉일: {{ movie.info.date }}<br>감독: {{ movie.info.director }}<span class="line">  ||  </span>출연: {{
                     movie.info.star }}</p>
-                <p style="overflow: hidden">{{ movie.info.desc }}</p>
+                <p>{{ movie.info.desc }}</p>
             </div>
-<<<<<<< HEAD
             <div class="link">
-                <a id="link" style="color: darkorange" href="https://www.youtube.com{{ movie.link }}">
+                <a id="link" style="color: darkorange" href="{{ movie.link }}" target="_blank">
                     <i class="fa fa-youtube-play" aria-hidden="true" style="color: orangered; margin-right: 5px"></i><u>'{{
                     movie.title }}' 유튜브 영상 보러 가기</u>
                 </a>
@@ -124,11 +146,11 @@
             <hr>
             <div id="comments" class="comments">
                 <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
-                    <mark>{{ movie.comments[0].nick }}</mark>
+                    <mark>{{ movie.comments[0].nickname }}</mark>
                     : {{ movie.comments[0].comment }}
                 </p>
                 <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
-                    <mark>{{ movie.comments[1].nick }}</mark>
+                    <mark>{{ movie.comments[1].nickname }}</mark>
                     : {{ movie.comments[1].comment }}
                 </p>
             </div>
@@ -136,30 +158,5 @@
         {% endfor %}
     </div>
 </div>
-=======
-        </div>
-        <hr>
-        <<<<<<< HEAD
-        <div id="definitions">
-
-            <div style="padding:10px">
-                <i> go to /Login </i>
-                <P> hi</P>
-                <P> hi32</P>
-
-
-                =======
-            </div>
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-end">
-                    <div>
-                        <h1 id="word" style="display: inline;"> This is home </h1>
-                        >>>>>>> 7c9fccb495475087da21d916e46dbbe8bad2b3b1
-                    </div>
-                </div>
-                <hr>
-            </div>
-        </div>
->>>>>>> 786bf0188207d7bdf4c0e748ef046857d756a92c
 </body>
 </html>
