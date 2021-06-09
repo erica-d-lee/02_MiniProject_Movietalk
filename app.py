@@ -16,6 +16,20 @@ db = client.dbmovietalk
 def home():
     return render_template('index.html')
 
+@app.route('/detail')
+def detail():
+    # DB에서 저장된 단어 찾아서 HTML에 나타내기
+    comments = list(db.comment.find({}, {"_id": False}))
+    return render_template("detail.html", comments=comments)
+
+@app.route('/api/save_comment', methods=['POST'])
+def save_comment():
+    # 댓글 저장하기
+    comment_receive = request.form["comment_give"]
+    doc = {"comment": comment_receive}
+    db.comment.insert_one(doc)
+    return jsonify({'result': 'success', 'msg': '저장완료'})
+
 @app.route('/login')
 def login():
     return render_template('login.html')
