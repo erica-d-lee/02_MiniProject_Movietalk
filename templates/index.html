@@ -101,7 +101,7 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="banner" onclick="window.location.href = '/main'"></div>
+    <div class="banner" onclick="window.location.href = '/'"></div>
     {% for movie in movies %}
     <div>
         <div id="container" class="container">
@@ -114,6 +114,7 @@
                     movie.info.star }}</p>
                 <p style="overflow: hidden">{{ movie.info.desc }}</p>
             </div>
+<<<<<<< HEAD
             <div class="link">
                 <a id="link" style="color: darkorange" href="https://www.youtube.com{{ movie.link }}">
                     <i class="fa fa-youtube-play" aria-hidden="true" style="color: orangered; margin-right: 5px"></i><u>'{{
@@ -135,5 +136,30 @@
         {% endfor %}
     </div>
 </div>
+=======
+        </div>
+        <hr>
+        <<<<<<< HEAD
+        <div id="definitions">
+
+            <div style="padding:10px">
+                <i> go to /Login </i>
+                <P> hi</P>
+                <P> hi32</P>
+
+
+                =======
+            </div>
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-end">
+                    <div>
+                        <h1 id="word" style="display: inline;"> This is home </h1>
+                        >>>>>>> 7c9fccb495475087da21d916e46dbbe8bad2b3b1
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+>>>>>>> 786bf0188207d7bdf4c0e748ef046857d756a92c
 </body>
 </html>

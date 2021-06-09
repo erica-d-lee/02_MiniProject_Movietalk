@@ -25,7 +25,8 @@
     padding: 20px;
     background-color: white;
 
-    border: solid 1px gray;
+    border: solid 2px gray;
+    padding-auto: 20px;
     border-radius: 10px;
 }
 
@@ -45,4 +46,37 @@ span.example {
     background-color: transparent;
     background-image: none;
     border-color: #e8344e;
+}
+
+
+
+.box-wrap {
+    display :flex;
+    height :300px;
+    width: 550px;
+    background-color: purple;
+    /*border: 1px solid black;
+    border-radius: 15px;*/
+    margin : 1px;
+    /*justify-content: center;*/
+}
+
+.box{
+    margin-top:20px;
+    width:280px;
+    height:250px;
+    background-color: yellow;
+
+}
+
+.movie-img{
+    margin-left: 20px;
+    margin-top:20px;
+}
+button{
+    margin-top: 10px;
+
+}
+.desc{
+    background-color: #e8344e;
 }
