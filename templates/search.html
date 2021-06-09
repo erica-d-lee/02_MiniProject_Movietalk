@@ -18,10 +18,23 @@
 
     }
 
+    function sign_out() {
+        $.removeCookie('mytoken', {path: '/'});
+        alert('로그아웃!')
+        window.location.href = "/login"
+    }
+
 {% endblock %}
 
 {% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+{% endblock %}
+
+{% block usercontent %}
+    <span>{{ user_info.username }}님</span>
+    <div class="button level-item has-text-centered is-sparta is-outlined" aria-label="logout" onclick="sign_out()">
+    로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div>
 {% endblock %}
 
 {% block content %}

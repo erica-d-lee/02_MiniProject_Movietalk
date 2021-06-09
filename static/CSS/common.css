@@ -1,0 +1,36 @@
+@media screen and (min-width: 1408px) {
+    .container:not(.is-max-desktop):not(.is-max-widescreen) {
+        max-width: 800px;
+    }
+}
+
+@media screen and (min-width: 1216px) {
+    .container:not(.is-max-desktop) {
+        max-width: 800px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .container {
+        max-width: 800px;
+    }
+}
+
+.user-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.user-container>span {
+    margin-right: 15px;
+}
+
+.user-container>div {
+    width: 150px;
+}
+
+.is-color {
+    color: #4F5A5F !important;
+}

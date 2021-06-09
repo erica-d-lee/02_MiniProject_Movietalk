@@ -40,15 +40,22 @@ def main():
             # movie['link'] = linkdata
         return render_template('index.html', movies=movies, user_info=user_info)
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login"))
+        return redirect(url_for("login", msg="login_time_expired"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login"))
 
 @app.route('/detail')
 def detail():
-    # DB에서 저장된 단어 찾아서 HTML에 나타내기
-    comments = list(db.comment.find({}, {"_id": False}))
-    return render_template("detail.html", comments=comments)
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        comments = list(db.comment.find({}, {"_id": False}))
+        return render_template("detail.html", comments=comments, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="login_time_expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
 
 @app.route('/api/save_comment', methods=['POST'])
 def save_comment():
@@ -60,7 +67,12 @@ def save_comment():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    msg = request.args.get("msg")
+    token_receive = request.cookies.get('mytoken')
+    if token_receive is None or msg == "login_time_expired":
+        return render_template('login.html')
+    else:
+        return redirect(url_for("main"))
 
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
@@ -105,36 +117,43 @@ def check_dup():
 
 @app.route('/search/<keyword>', methods=['GET'])
 def search(keyword):
-    r = requests.get(f"https://openapi.naver.com/v1/search/movie.json?query={keyword}&display=20", headers={ "X-Naver-Client-Id": "UvCC6ASMTNmD3iU0PkX9",
-                    "X-Naver-Client-Secret": "imP9_GWUAj"})
-    result = r.json()
-    print(result)
-    print(keyword)
-    movies = result['items']
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        r = requests.get(f"https://openapi.naver.com/v1/search/movie.json?query={keyword}&display=20",
+                         headers={"X-Naver-Client-Id": "UvCC6ASMTNmD3iU0PkX9",
+                                  "X-Naver-Client-Secret": "imP9_GWUAj"})
+        result = r.json()
+        print(result)
+        print(keyword)
+        movies = result['items']
+
+        for movie in movies:
+
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+            data = requests.get(movie['link'], headers=headers)
+            soup = BeautifulSoup(data.text, 'html.parser')
+            desc = soup.select_one(
+                "#content > div.article > div.section_group.section_group_frst > div:nth-child(1) > div > div > p")
+
+            try:
+                movie["desc"] = desc.text
+            except Exception as e:
+                continue
+
+        print(movies[0])
+        print(movies[1])
+
+        return render_template('search.html', word=keyword, result=result, movies=movies, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="login_time_expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
 
 
 
-    for movie in movies:
-
-
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-        data = requests.get(movie['link'], headers=headers)
-        soup = BeautifulSoup(data.text, 'html.parser')
-        desc = soup.select_one(
-            "#content > div.article > div.section_group.section_group_frst > div:nth-child(1) > div > div > p")
-
-
-        try:
-            movie["desc"] = desc.text
-        except Exception as e:
-            continue
-
-    print(movies[0])
-    print(movies[1])
-
-
-    return render_template('search.html', word=keyword, result=result, movies=movies)
 
 
 
