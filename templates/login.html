@@ -54,10 +54,10 @@
         let password2 = $("#input-password2").val()
         let nickname = $("#input-nickname").val()
 
-        if ($("#input-username").hasClass("is-danger")) {
+        if ($("#input-username").hasClass("check-danger")) {
             alert("아이디를 다시 확인해주세요.")
             return;
-        } else if (!$("#input-username").hasClass("is-success")) {
+        } else if (!$("#input-username").hasClass("check-success")) {
             alert("아이디 중복확인을 해주세요.")
             return;
         }
@@ -116,11 +116,11 @@
             success: function (response) {
                 if (response["exists"]) {
                     alert("이미 존재하는 아이디입니다.")
-                    $("#input-username").removeClass("is-success").addClass("is-danger")
+                    $("#input-username").removeClass("check-success").addClass("check-danger")
                     $("#input-username").focus()
                 } else {
                     alert("사용할 수 있는 아이디입니다.")
-                    $("#input-username").removeClass("is-danger").addClass("is-success")
+                    $("#input-username").removeClass("check-danger").addClass("check-success")
                 }
             }
         });
@@ -149,7 +149,6 @@
                     <button class="button is-color" onclick="check_dup()">중복확인</button>
                 </div>
             </div>
-            <p id="help-id-login" class="help is-danger"></p>
 
             <div class="field">
                 <div class="control has-icons-left">

@@ -14,7 +14,15 @@ db = client.dbmovietalk
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        return render_template('index.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
 
 @app.route('/login')
 def login():
