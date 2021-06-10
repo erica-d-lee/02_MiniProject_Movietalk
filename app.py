@@ -203,14 +203,14 @@ def sendtoDB():
     movie_title = title_receive
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('headless')
-    driver = webdriver.Chrome('/Users/skylerbang/Downloads/chromedriver',
+    driver = webdriver.Chrome('/Users/User/Desktop/chromedriver/chromedriver.exe',
                               chrome_options=chrome_options)
+    # / Users / skylerbang / Downloads / chromedriver
     driver.implicitly_wait(3)
     driver.get('https://www.youtube.com/results?search_query=' + movie_title)
     html = driver.page_source
     soup = BeautifulSoup(html, 'html.parser')
-    linkdata = soup.select_one(
-        '#contents > ytd-video-renderer:nth-child(1) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a:nth-child(1)')[
+    linkdata = soup.select_one('#contents > ytd-video-renderer:nth-child(1) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a:nth-child(1)')[
         'href']
 
 

@@ -163,7 +163,7 @@
 <div class="wrap">
     <div class="banner" onclick="window.location.href = '/'"></div>
     <div class="user-container">
-        <span><span style="color: orangered; font-weight: bold;"><u>{{ user_info.username }}</u></span>님</span>
+        <span><span style="color: orangered; font-weight: bold;">{{ user_info.username }}</span>님</span>
         <div class="button level-item has-text-centered is-color is-outlined" aria-label="logout" onclick="window.location.href='/search'" style="margin-right: 15px;">
             영화 추가&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-plus-square-o" aria-hidden="true"></i></span></div>
         <div class="button level-item has-text-centered is-color is-outlined" aria-label="logout" onclick="sign_out()">
@@ -172,7 +172,7 @@
     {% for movie in movies %}
     <div>
         <div id="container" class="container">
-            <div class="movieimg" style="background-image: url('{{ movie.imgurl }}');"><img src="{{movie.image|safe}}" style=" width: 170px; height: 180px" class="movie-img" /></div>
+            <div class="movieimg" style="background-image: url('{{ movie.imgurl |safe}}');"></div>
             <div class="movieinfo">
                 <h3><a style="color: orangered; font-weight: bold; font-size: 25px;"
                        href="#"><u>{{ movie.title|safe }}</u></a></h3>
@@ -185,19 +185,23 @@
             <div class="link">
                 <a id="link" style="color: darkorange" href="{{ movie.link |safe}}" target="_blank">
                     <i class="fa fa-youtube-play" aria-hidden="true" style="color: orangered; margin-right: 7px"></i><u>'{{
-                    movie.title }}' 유튜브 영상 보러 가기</u>
+                    movie.title|safe }}' 유튜브 영상 보러 가기</u>
                 </a>
             </div>
             <hr>
             <div id="comments" class="comments">
+                {% if movie.comments[0] %}
                 <p style="margin-bottom: 12px"><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
                     <mark>{{ movie.comments[0].nickname }}</mark>
                     : {{ movie.comments[0].comment }}
                 </p>
+                {% endif %}
+                {% if movie.comments[1] %}
                 <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
                     <mark>{{ movie.comments[1].nickname }}</mark>
                     : {{ movie.comments[1].comment }}
                 </p>
+                {% endif %}
             </div>
         </div>
     </div>
