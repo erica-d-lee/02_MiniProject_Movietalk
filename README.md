@@ -27,7 +27,8 @@ MovieTALK(무비톡)
 * 
   <summary>
   펼쳐보기
-   
+  시연 영상 : 
+   https://www.youtube.com/watch?v=8Gbv7yYv2qM
    
   </summary>
     <br>
