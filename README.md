@@ -24,13 +24,15 @@ MovieTALK(무비톡)
 
 
 ## 결과
-
-*<detail>
-<summary>
-  Detail
+* <details>
+  <summary>
+   Unfold
   </summary>
     <br>
 
-    
+    Demonstration Video : https://www.youtube.com/watch?v=8Gbv7yYv2qM
+
   </details>
   <br>
+  
+  
