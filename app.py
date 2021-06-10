@@ -213,23 +213,11 @@ def sendtoDB():
         return jsonify({'msg': '이미 추가된 영화입니다. 메인 페이지에서 확인해주세요'})
 
 
-    # movie_title = title_receive
-    # chrome_options = webdriver.ChromeOptions()
-    # chrome_options.add_argument('headless')
-    # driver = webdriver.Chrome('/Users/User/Desktop/chromedriver/chromedriver.exe',
-    #                           chrome_options=chrome_options)
-    # # / Users / skylerbang / Downloads / chromedriver
-    # driver.implicitly_wait(3)
-    # driver.get('https://www.youtube.com/results?search_query=' + movie_title)
-    # html = driver.page_source
-    # soup = BeautifulSoup(html, 'html.parser')
-    # linkdata = soup.select_one('#contents > ytd-video-renderer:nth-child(1) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a:nth-child(1)')[
-    #     'href']
-    #
-    #
-    # youtube_link = "https://www.youtube.com"+linkdata
-    # db.movie.update_one({'title': title_receive}, {'$set': {'link': youtube_link}})
-    return jsonify({'msg': 'POST 연결되었습니다!'})
+
+
+    youtube_link = 'https://www.youtube.com/results?search_query=' + title_receive
+    db.movie.update_one({'title': title_receive}, {'$set': {'link': youtube_link}})
+    return jsonify({'msg': ' Testing 용입니다 지워주세요 좀있다가 POST 연결되었습니다!'})
 
 
 

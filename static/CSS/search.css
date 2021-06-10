@@ -40,22 +40,38 @@ span.example {
     font-size: 14px;
 }
 
+
+.btn-sparta {
+    color: #fff;
+
+    border-color: #e8344e;
+}
+
+.btn-outline-sparta {
+
+    background-color: transparent;
+    background-image: none;
+    border-color: #e8344e;
+}
+
+
+
 .box-wrap {
     display: flex;
     height: 300px;
     width: 550px;
-    background-color: purple;
     /*border: 1px solid black;
     border-radius: 15px;*/
     margin: 1px;
     /*justify-content: center;*/
 }
 
-.box {
-    margin-top: 20px;
-    width: 280px;
-    height: 250px;
-    background-color: yellow;
+
+.box{
+    margin-top:20px;
+    width:280px;
+    height:250px;
+
 
 }
 
@@ -66,9 +82,3 @@ span.example {
 
 button {
     margin-top: 10px;
-
-}
-
-.desc {
-    background-color: #e8344e;
-}
