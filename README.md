@@ -11,34 +11,40 @@
 ## Proejct Scopre
 * <details>
   <summary>
-  Unfold
- </summary>  
-    1. Project Name 
-MovieTALK(무비톡)
+  펼쳐보기
+  </summary>
+    <br>
 
-2. Project Background
+     1. Project Name 
+     MovieTALK(무비톡)
 
-Do you want to share your favorite movie with your friends? 
-Please ask them to join our MovieTalk 
-We can share the movie and leave the comments 
+     2. Project Background
 
-3. Implemented Features 
+     Do you want to share your favorite movie with your friends? 
+     Please ask them to join our MovieTalk 
+     We can share the movie and leave the comments 
+
+     3. Implemented Features 
+
+        Sign up
+          Create an Account
+             -Check ID
+             -Check PW 
+          Log in
+
+          Log out 
+
+          Search Movie by Title
+
+          Add Movie in to Main Feed
+
+          Check Detail of movie 
+
+          Leave Comment 
+  </details>
+  <br>
+
    
-   Sign up
-     Create an Account
-        -Check ID
-        -Check PW 
-   Log in
-   
-   Log out 
-   
-   Search Movie by Title
-   
-   Add Movie in to Main Feed
-   
-   Check Detail of movie 
-   
-   Leave Comment 
   </details> 
  <br>
 4. Requriementes 
