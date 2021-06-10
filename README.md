@@ -12,7 +12,7 @@
 * <details>
   <summary>
   Unfold
-    
+ </summary>  
     1. Project Name 
 MovieTALK(무비톡)
 
