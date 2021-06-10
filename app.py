@@ -36,11 +36,8 @@ def main():
             for rmovie in rmovies:
                 rmovie['comments'] = comments
                 rmovie["_id"] = str(rmovie["_id"])
-            print("sdfdsf")
-            print(list_movies)
             list_movies.append(rmovies[0])
         result = sorted(list_movies, key=lambda x:len(x['comments']), reverse=True)
-        print(result)
         return render_template('index.html', movies=result, user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="login_time_expired"))
