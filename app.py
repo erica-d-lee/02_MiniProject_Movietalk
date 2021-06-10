@@ -7,6 +7,7 @@ import hashlib
 import jwt
 from datetime import datetime, timedelta
 from selenium import webdriver
+from operator import itemgetter
 
 app = Flask(__name__)
 
@@ -23,22 +24,17 @@ def main():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        movies = list(db.movies.find({}, {"_id": False}))
-        # for movie in movies:
-            # movie_title = movie['title']
-            # chrome_options = webdriver.ChromeOptions()
-            # chrome_options.add_argument('headless')
-            # driver = webdriver.Chrome('/Users/User/Desktop/chromedriver/chromedriver.exe',
-            #                           chrome_options=chrome_options)
-            # driver.implicitly_wait(3)
-            # driver.get('https://www.youtube.com/results?search_query=' + movie_title)
-            # html = driver.page_source
-            # soup = BeautifulSoup(html, 'html.parser')
-            # linkdata = soup.select_one(
-            #     '#contents > ytd-video-renderer:nth-child(1) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a:nth-child(1)')[
-            #     'href']
-            # movie['link'] = linkdata
-        return render_template('index.html', movies=movies, user_info=user_info)
+        movies = list(db.movie.find({}))
+        list_movies = []
+        for movie in movies:
+            movie_id = movie['_id']
+            rmovies = list(db.movie.find({"_id": movie_id}, {"_id": False}))
+            comments = list(db.comment.find({"movieid": movie_id}, {"_id": False}))
+            for rmovie in rmovies:
+                rmovie['comments'] = comments
+            list_movies.append(rmovies[0])
+        result = sorted(list_movies, key=lambda x:len(x['comments']), reverse=True)
+        return render_template('index.html', movies=result, user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="login_time_expired"))
     except jwt.exceptions.DecodeError:
