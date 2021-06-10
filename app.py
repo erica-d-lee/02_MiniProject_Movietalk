@@ -6,7 +6,6 @@ import datetime
 import hashlib
 import jwt
 from datetime import datetime, timedelta
-from selenium import webdriver
 
 from bson import ObjectId
 
@@ -16,7 +15,7 @@ app = Flask(__name__)
 SECRET_KEY = 'MOVIETALK'
 
 
-client = MongoClient('mongodb://admin:test@localhost', 27017)
+client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.dbmovietalk
 
 
