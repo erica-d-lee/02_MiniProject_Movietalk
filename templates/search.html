@@ -1,120 +1,256 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>  Search </title>
 
+    <!-- 구글 폰트 -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
-{% block title %} Search {% endblock %}
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-{% block script %}
-
-    function find_movie(){
-        let word = $("#input-word").val();
-
-        if(word) {
-            window.location.href=`/search/${word}?status_give=new`
-        } else {
-            alert("영화 제목을 입력해주세요!")
-        }
-    }
-
-    function godb(item){
-        let title = item['title'];
-        let image = item['image'];
-        let pubDate = item['pubDate'];
-        let actor = item['actor'];
-        let director = item['director'];
-        let desc = item['desc'];
-        let genre = item['genre']
-        alert("추가완료 ")
-        $.ajax({
-            type: "POST",
-            url: "/search/save",
-            data: {
-                title_give: title,
-                image_give: image,
-                pubDate_give: pubDate,
-                actor_give: actor,
-                director_give: director,
-                desc_give: desc,
-                genre_give: genre
-            },
-            success: function (response) {
-                alert(response['msg']);
-                window.location.href=`/`
+    <style>
+        @media screen and (min-width: 1408px) {
+            .container:not(.is-max-desktop):not(.is-max-widescreen) {
+                max-width: 800px;
             }
-        });
-    }
+        }
 
-    function sign_out() {
-        $.removeCookie('mytoken', {path: '/'});
-        alert('로그아웃!')
-        window.location.href = "/login"
-    }
+        @media screen and (min-width: 1216px) {
+            .container:not(.is-max-desktop) {
+                max-width: 800px;
+            }
+        }
 
-{% endblock %}
+        @media screen and (min-width: 1024px) {
+            .container {
+                max-width: 800px;
+            }
+        }
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+        * {
+            font-family: 'Noto Serif KR', serif;
+        }
 
-{% endblock %}
+        .user-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 10px;
+        }
 
-{% block usercontent %}
-    <span><span style="color: orangered; font-weight: bold;">{{ user_info.username }}</span>님</span>
-    <div class="button level-item has-text-centered is-sparta is-outlined" aria-label="logout" onclick="sign_out()">
-    로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div>
-{% endblock %}
+        .user-container>span {
+            margin-right: 15px;
+        }
 
-{% block content %}
-    <h1 style="color: darkorange; font-weight: bold; font-size: 25px; text-align: center;"> 영화를 추천해주세요 <i class="fa fa-film" aria-hidden="true"></i></h1>
-    <hr></hr>
-    <p class="important">
+        .user-container>div {
+            width: 150px;
+        }
 
-    <div class="form-group">
-        <label for="post-url" style="color: darkorange; font-weight: bold;"> 영화 제목을 넣어주세요 </label>
-        <input id="input-word" class="form-control" placeholder="">
-    </div>
-    </p>
-    <button type="button" class="btn btn-secondary" style="background-color: orangered; border-color: orangered;" onclick="find_movie()"> 영화 찾기
-        <i class="fa fa-search" aria-hidden="true"></i></button>
+        .is-color {
+            color: #4F5A5F !important;
+        }
 
-{% endblock %}
+        * {
+            font-family: 'Noto Serif KR', serif;
+        }
 
+        .wrap {
+            background-color: rgb(252, 207, 109);
+            min-height: 100vh;
+            padding-bottom: 50px;
 
-{% block content2 %}
-    {% if result %}
-    <div class="container">
+        }
 
-        {%  for  item  in result['items'] %}
+        .banner {
+            width: 100%;
+            height: 200px;
+
+            background-color: white;
+            background-image: url('/static/movie.png');
+
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+
+            cursor: pointer;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+
+            border: thick double darkgray;
+            border-radius: 30px;
+            padding-auto: 20px;
+        }
+
+        span.example {
+            color: gray;
+            font-size: 14px;
+        }
+
+        .btn-sparta {
+            color: #fff;
+
+            border-color: #e8344e;
+        }
+
+        .btn-outline-sparta {
+
+            background-color: transparent;
+            background-image: none;
+            border-color: #e8344e;
+        }
+
+        .box-wrap {
+            display: flex;
+            height: 300px;
+            width: 550px;
+            /*border: 1px solid black;
+            border-radius: 15px;*/
+            margin: 1px;
+            /*justify-content: center;*/
+        }
+
+        .box{
+            margin-top:20px;
+            width:280px;
+            height:250px;
+        }
+
+        .movie-img {
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+
+    <script>
+        function find_movie(){
+            let word = $("#input-word").val();
+
+            if(word) {
+                window.location.href=`/search/${word}?status_give=new`
+            } else {
+                alert("영화 제목을 입력해주세요!")
+            }
+        }
+
+        function godb(item){
+            let title = item['title'];
+            let image = item['image'];
+            let pubDate = item['pubDate'];
+            let actor = item['actor'];
+            let director = item['director'];
+            let desc = item['desc'];
+            let genre = item['genre']
+
+            $.ajax({
+                type: "POST",
+                url: "/search/save",
+                data: {
+                    title_give: title,
+                    image_give: image,
+                    pubDate_give: pubDate,
+                    actor_give: actor,
+                    director_give: director,
+                    desc_give: desc,
+                    genre_give: genre
+                },
+                success: function (response) {
+                    alert(response['msg']);
+                    window.location.href=`/`
+                }
+            });
+        }
+
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
+    </script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="banner" onclick="window.location.href = '/'"></div>
+        <div class="user-container">
+         <span><span style="color: orangered; font-weight: bold;">{{ user_info.username }}</span>님</span>
+        <div class="button level-item has-text-centered is-sparta is-outlined" aria-label="logout" onclick="sign_out()">
+        로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div>
+        </div>
+
         <div class="container">
-         <h1 id="word" style="display: inline;"> {{ item.title |safe}}  </h1>
-         <div class="box-wrap">
-            <div class="box" >
-                <div>
-                     <img src="{{item.image}}" style=" width: 170px; height: 180px" class="movie-img" />
-                </div>
-             <button type="button" class="btn btn-secondary" onclick="godb({{ item }})"> 추가하기
-             <i class="fa fa-plus" aria-hidden="true"></i></button>
+            <h1 style="color: darkorange; font-weight: bold; font-size: 25px; text-align: center;"> 영화를 추천해주세요 <i class="fa fa-film" aria-hidden="true"></i></h1>
+        <hr></hr>
+        <p class="important">
 
-            </div>
-            <div class="box" >
-                       <h3 id="word" style="display: inline;">  출시년도 : {{  item.pubDate |safe}} </h3>
-                <hr>
-                        <h3 id="word" style="display: inline;">  감독: {{  item.director|safe }} </h3>
-                <hr>
-                <h4 id="word" style="display: inline;">   배우 :{{  item.actor|safe }} </h4>
-             </div>
+        <div class="form-group">
+            <label for="post-url" style="color: darkorange; font-weight: bold;"> 영화 제목을 넣어주세요 </label>
+            <input id="input-word" class="form-control" placeholder="">
         </div>
-            <div class="desc">
-               <h4 id="word" style="display: inline;">   줄거리 :{{ item.desc|safe }}  </h4>
-            </div>
-        </div>
-        {% endfor %}
+        </p>
+        <button type="button" class="btn btn-secondary" style="background-color: orangered; border-color: orangered;" onclick="find_movie()"> 영화 찾기
+            <i class="fa fa-search" aria-hidden="true"></i></button>
+
 
     </div>
-    {% endif %}
-{% endblock %}
+    {% if result %}
+        <div class="container">
 
+            {%  for  item  in result['items'] %}
+            <div class="container">
+             <h1 id="word" style="display: inline;"> {{ item.title |safe}}  </h1>
+             <div class="box-wrap">
+                <div class="box" >
+                    <div>
+                         <img src="{{item.image}}" style=" width: 170px; height: 180px" class="movie-img" />
+                    </div>
+                 <button type="button" class="btn btn-secondary" onclick="godb({{ item }})"> 추가하기
+                 <i class="fa fa-plus" aria-hidden="true"></i></button>
 
+                </div>
+                <div class="box" >
+                           <h3 id="word" style="display: inline;">  출시년도 : {{  item.pubDate |safe}} </h3>
+                    <hr>
+                            <h3 id="word" style="display: inline;">  감독: {{  item.director|safe }} </h3>
+                    <hr>
+                    <h4 id="word" style="display: inline;">   배우 :{{  item.actor|safe }} </h4>
+                 </div>
+            </div>
+                <div class="desc">
+                   <h4 id="word" style="display: inline;">   줄거리 :{{ item.desc|safe }}  </h4>
+                </div>
+            </div>
+            {% endfor %}
 
-
-
-
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

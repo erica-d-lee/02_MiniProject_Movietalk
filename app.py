@@ -16,7 +16,7 @@ app = Flask(__name__)
 SECRET_KEY = 'MOVIETALK'
 
 
-client = MongoClient('mongodb://admin:test@localhost', 27017)
+client = MongoClient('mongodb://test:test@localhost', 27017)
 db = client.dbmovietalk
 
 
@@ -76,8 +76,7 @@ def save_comment():
     id_receive = request.form["id_give"]
     doc= {'nickname':nickname["nickname"], 'comment': comment_receive, 'username': payload["id"], 'movieid': id_receive}
     db.comment.insert_one(doc)
-    return jsonify({'result': 'success', 'msg': '입력완료'})
-
+    return jsonify({'result': 'success', 'msg': '댓글 등록이 완료 되었습니다!'})
 
 @app.route('/login')
 def login():
