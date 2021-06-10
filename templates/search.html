@@ -5,36 +5,26 @@
 
 {% block script %}
 
-
-
-
-    function melong(){
-
-
+    function find_movie(){
         let word = $("#input-word").val();
-        alert(word)
-        window.location.href=`/search/${word}?status_give=new`
 
-
+        if(word) {
+            window.location.href=`/search/${word}?status_give=new`
+        } else {
+            alert("영화 제목을 입력해주세요!")
+        }
     }
 
-
-
     function godb(item){
+        let title = item['title'];
+        let image = item['image'];
+        let pubDate = item['pubDate'];
+        let actor = item['actor'];
+        let director = item['director'];
+        let desc = item['desc'];
+        let genre = item['genre']
 
-            alert("testing")
-            let title = item['title'];
-            let image = item['image'];
-            let pubDate = item['pubDate'];
-            let actor = item['actor'];
-            let director = item['director'];
-            let desc = item['desc'];
-            let genre = item['genre']
-
-            alert(title)
-
-
-           $.ajax({
+        $.ajax({
             type: "POST",
             url: "/search/save",
             data: {
@@ -48,26 +38,16 @@
             },
             success: function (response) {
                 alert(response['msg']);
-
+                window.location.href=`/`
             }
         });
-
-
-
     }
-
-
-
-
-
-
 
     function sign_out() {
         $.removeCookie('mytoken', {path: '/'});
         alert('로그아웃!')
         window.location.href = "/login"
     }
-
 
 {% endblock %}
 
@@ -92,49 +72,44 @@
         <input id="input-word" class="form-control" placeholder="">
     </div>
     </p>
-    <button type="button" class="btn btn-secondary" onclick="melong()"> 영화 찾기
-        <i class="fa fa-search" aria-hidden="true"></i></button>
-    <button type="button" class="btn btn-secondary"> 다시 찾기
+    <button type="button" class="btn btn-secondary" onclick="find_movie()"> 영화 찾기
         <i class="fa fa-search" aria-hidden="true"></i></button>
 
 {% endblock %}
 
 
-
 {% block content2 %}
-
+    {% if result %}
     <div class="container">
 
+        {%  for  item  in result['items'] %}
+        <div class="container">
+         <h1 id="word" style="display: inline;"> {{ item.title |safe}}  </h1>
+         <div class="box-wrap">
+            <div class="box" >
+                <div>
+                     <img src="{{item.image}}" style=" width: 170px; height: 180px" class="movie-img" />
+                </div>
+             <button type="button" class="btn btn-secondary" onclick="godb({{ item }})"> 추가하기
+             <i class="fa fa-plus" aria-hidden="true"></i></button>
 
-    {%  for  item  in result['items'] %}
-    <div class="container">
-     <h1 id="word" style="display: inline;"> {{ item.title |safe}}  </h1>
-     <div class="box-wrap">
-        <div class="box" >
-
-            <div>
-
-                 <img src="{{item.image}}" style=" width: 170px; height: 180px" class="movie-img" />
             </div>
-         <button type="button" class="btn btn-secondary" onclick="godb({{ item }})"> 추가하기
-         <i class="fa fa-plus" aria-hidden="true"></i></button>
-
-
+            <div class="box" >
+                       <h3 id="word" style="display: inline;">  출시년도 : {{  item.pubDate |safe}} </h3>
+                <hr>
+                        <h3 id="word" style="display: inline;">  감독: {{  item.director|safe }} </h3>
+                <hr>
+                <h4 id="word" style="display: inline;">   배우 :{{  item.actor|safe }} </h4>
+             </div>
         </div>
-        <div class="box" >
-                   <h3 id="word" style="display: inline;">  출시년도 : {{  item.pubDate |safe}} </h3>
-            <hr>
-                    <h3 id="word" style="display: inline;">  감독: {{  item.director|safe }} </h3>
-            <hr>
-            <h4 id="word" style="display: inline;">   배우 :{{  item.actor|safe }} </h4>
-         </div>
-    </div>
-        <div class="desc">
-           <h4 id="word" style="display: inline;">   줄거리 :{{ item.desc|safe }}  </h4>
+            <div class="desc">
+               <h4 id="word" style="display: inline;">   줄거리 :{{ item.desc|safe }}  </h4>
+            </div>
         </div>
+        {% endfor %}
+
     </div>
-    {% endfor %}
-    </div>
+    {% endif %}
 {% endblock %}
 
 

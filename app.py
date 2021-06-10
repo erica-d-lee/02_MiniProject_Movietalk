@@ -102,7 +102,17 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-
+@app.route('/search', methods=['GET'])
+def search_no_keyword():
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        return render_template('search.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="login_time_expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
 
 @app.route('/search/<keyword>', methods=['GET'])
 def search(keyword):
@@ -113,12 +123,9 @@ def search(keyword):
         user_info = db.users.find_one({"username": payload["id"]})
 
         r = requests.get(f"https://openapi.naver.com/v1/search/movie.json?query={keyword}&display=6",
-
                          headers={"X-Naver-Client-Id": "UvCC6ASMTNmD3iU0PkX9",
                                   "X-Naver-Client-Secret": "imP9_GWUAj"})
         result = r.json()
-        print(result)
-        print(keyword)
         movies = result['items']
 
         for movie in movies:
@@ -132,6 +139,9 @@ def search(keyword):
 
             genre = soup.select_one(
                 "#content > div.article > div.wide_info_area > div.mv_info > p > span:nth-child(1) > a")
+
+            movie["director"] = movie["director"].rstrip("|")
+            movie["actor"] = movie["actor"].rstrip("|")
             try:
                 movie["desc"] = desc.text
                 movie["genre"] = genre.text
@@ -144,11 +154,8 @@ def search(keyword):
         return redirect(url_for("login"))
 
 
-
 @app.route('/search/save', methods=['POST'])
 def sendtoDB():
-
-
 
     title_receive = request.form['title_give']
     director_receive = request.form['director_give']
@@ -167,7 +174,6 @@ def sendtoDB():
     print(desc_receive)
     print(genre_receive)
 
-
     doc = {
         "title": title_receive,
         "director": director_receive,
@@ -178,21 +184,14 @@ def sendtoDB():
         "genre": genre_receive
     }
 
-
-
-
     movie_name = db.movie.find_one({'title': request.form['title_give']})
-    print(movie_name)
-
 
     if movie_name is None:
         db.movie.insert_one(doc)
         print(" DB 저장 완료 ")
-
     else:
         print(title_receive)
         return jsonify({'msg': '이미 추가된 영화입니다. 메인 페이지에서 확인해주세요'})
-
 
 
     movie_title = title_receive
@@ -216,7 +215,6 @@ def sendtoDB():
 
 
 if __name__ == '__main__':
-
    app.run('0.0.0.0',port=5000,debug=True)
 
 
