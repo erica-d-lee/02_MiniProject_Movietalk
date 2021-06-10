@@ -14,10 +14,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
@@ -54,9 +57,9 @@
         .container {
             width: 80%;
             max-width: 800px;
-            height: 450px;
-            margin: 30px auto 30px auto;
-            padding: 20px;
+            height: 470px;
+            margin: 0 auto 30px auto;
+            padding: 30px;
             background-color: white;
 
             border: thick double darkgray;
@@ -78,10 +81,17 @@
             width: auto;
             margin-left: 230px;
             word-break: break-all;
+
+            display: -webkit-box;
+            word-wrap: break-word;
+            -webkit-line-clamp: 7;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .link {
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .line {
@@ -94,72 +104,95 @@
             font-size: 17px;
         }
 
+        .comments {
+            width: 600px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 15px;
+        }
+
+        @media screen and (min-width: 1408px) {
+            .container:not(.is-max-desktop):not(.is-max-widescreen) {
+                max-width: 800px;
+            }
+        }
+
+        @media screen and (min-width: 1216px) {
+            .container:not(.is-max-desktop) {
+                max-width: 800px;
+            }
+        }
+
+        @media screen and (min-width: 1024px) {
+            .container {
+                max-width: 800px;
+            }
+        }
+
+        .user-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 10px;
+        }
+
+        .user-container>span {
+            margin-right: 15px;
+        }
+
+        .user-container>div {
+            width: 150px;
+        }
+
+        .is-color {
+            color: #4F5A5F !important;
+        }
+
     </style>
     <script>
-
+        function sign_out() {
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
     </script>
 </head>
 <body>
 <div class="wrap">
     <div class="banner" onclick="window.location.href = '/'"></div>
+    <div class="user-container">
+        <span><span style="color: orangered; font-weight: bold;"><u>{{ user_info.username }}</u></span>님</span>
+        <div class="button level-item has-text-centered is-color is-outlined" aria-label="logout" onclick="location.href='/search'" style="margin-right: 15px;">
+            영화 추가&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-plus-square-o" aria-hidden="true"></i></span></div>
+        <div class="button level-item has-text-centered is-color is-outlined" aria-label="logout" onclick="sign_out()">
+            로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div>
+    </div>
     {% for movie in movies %}
     <div>
         <div id="container" class="container">
-            <div class="movieimg" style="background-image: url('{{ movie.imgurl }}');"></div>
+            <div class="movieimg" style="background-image: url('{{ movie.imgurl }}');"><img src="{{movie.image|safe}}" style=" width: 170px; height: 180px" class="movie-img" /></div>
             <div class="movieinfo">
-                <h3><a style="color: orangered; font-weight: bold"
-                       href="#"><u>{{ movie.title }}</u></a></h3>
-                <p class="text">장르: {{ movie.info.genre }}<span class="line">  ||  </span>
-                    개봉일: {{ movie.info.date }}<br>감독: {{ movie.info.director }}<span class="line">  ||  </span>출연: {{
-                    movie.info.star }}</p>
-                <p style="overflow: hidden">{{ movie.info.desc }}</p>
+                <h3><a style="color: orangered; font-weight: bold; font-size: 25px;"
+                       href="#"><u>{{ movie.title|safe }}</u></a></h3>
+                <p class="text" style="width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 15px;">
+                    장르: {{ movie.genre }}<span class="line">  ||  </span>
+                    개봉일: {{ movie.date }}<br>감독: {{ movie.director }}<span class="line">  ||  </span>출연: {{
+                    movie.star }}</p>
+                <p>{{ movie.desc }}</p>
             </div>
-<<<<<<< HEAD
             <div class="link">
-                <a id="link" style="color: darkorange" href="https://www.youtube.com{{ movie.link }}">
-                    <i class="fa fa-youtube-play" aria-hidden="true" style="color: orangered; margin-right: 5px"></i><u>'{{
-                    movie.title }}' 유튜브 영상 보러 가기</u>
+                <a id="link" style="color: darkorange" href="{{ movie.link |safe}}" target="_blank">
+                    <i class="fa fa-youtube-play" aria-hidden="true" style="color: orangered; margin-right: 7px"></i><u>'{{
+                    movie.title|safe }}' 유튜브 영상 보러 가기</u>
                 </a>
             </div>
             <hr>
-            <div id="comments" class="comments">
-                <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
-                    <mark>{{ movie.comments[0].nick }}</mark>
-                    : {{ movie.comments[0].comment }}
-                </p>
-                <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
-                    <mark>{{ movie.comments[1].nick }}</mark>
-                    : {{ movie.comments[1].comment }}
-                </p>
-            </div>
+
+
         </div>
-        {% endfor %}
+    {% endfor %}
     </div>
 </div>
-=======
-        </div>
-        <hr>
-        <<<<<<< HEAD
-        <div id="definitions">
-
-            <div style="padding:10px">
-                <i> go to /Login </i>
-                <P> hi</P>
-                <P> hi32</P>
-
-
-                =======
-            </div>
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-end">
-                    <div>
-                        <h1 id="word" style="display: inline;"> This is home </h1>
-                        >>>>>>> 7c9fccb495475087da21d916e46dbbe8bad2b3b1
-                    </div>
-                </div>
-                <hr>
-            </div>
-        </div>
->>>>>>> 786bf0188207d7bdf4c0e748ef046857d756a92c
 </body>
 </html>

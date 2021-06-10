@@ -8,8 +8,6 @@ import jwt
 from datetime import datetime, timedelta
 from selenium import webdriver
 
-
-
 app = Flask(__name__)
 
 SECRET_KEY = 'MOVIETALK'
@@ -19,41 +17,32 @@ client = MongoClient('localhost', 27017)
 db = client.dbmovietalk
 
 
-
-
 @app.route('/')
 def main():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        movies = list(db.movies.find({}, {"_id": False}))
-        for movie in movies:
-            movie_title = movie['title']
-            chrome_options = webdriver.ChromeOptions()
-            chrome_options.add_argument('headless')
-            driver = webdriver.Chrome('/Users/User/Desktop/chromedriver/chromedriver.exe',
-                                      chrome_options=chrome_options)
-            driver.implicitly_wait(3)
-            driver.get('https://www.youtube.com/results?search_query=' + movie_title)
-            html = driver.page_source
-            soup = BeautifulSoup(html, 'html.parser')
-            linkdata = soup.select_one(
-                '#contents > ytd-video-renderer:nth-child(1) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a:nth-child(1)')[
-                'href']
-            movie['link'] = linkdata
-            print(movie)
+        movies = list(db.movie.find({}, {"_id": False}))
+        print(movies)
         return render_template('index.html', movies=movies, user_info=user_info)
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login"))
+        return redirect(url_for("login", msg="login_time_expired"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login"))
 
 @app.route('/detail')
 def detail():
-    # DB에서 저장된 단어 찾아서 HTML에 나타내기
-    comments = list(db.comment.find({}, {"_id": False}))
-    return render_template("detail.html", comments=comments)
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        comments = list(db.comment.find({}, {"_id": False}))
+        return render_template("detail.html", comments=comments, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="login_time_expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
 
 @app.route('/api/save_comment', methods=['POST'])
 def save_comment():
@@ -65,7 +54,12 @@ def save_comment():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    msg = request.args.get("msg")
+    token_receive = request.cookies.get('mytoken')
+    if token_receive is None or msg == "login_time_expired":
+        return render_template('login.html')
+    else:
+        return redirect(url_for("main"))
 
 @app.route('/sign_in', methods=['POST'])
 def sign_in():
@@ -110,38 +104,114 @@ def check_dup():
 
 @app.route('/search/<keyword>', methods=['GET'])
 def search(keyword):
-    r = requests.get(f"https://openapi.naver.com/v1/search/movie.json?query={keyword}&display=20", headers={ "X-Naver-Client-Id": "UvCC6ASMTNmD3iU0PkX9",
-                    "X-Naver-Client-Secret": "imP9_GWUAj"})
-    result = r.json()
-    print(result)
-    print(keyword)
-    movies = result['items']
+
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+        r = requests.get(f"https://openapi.naver.com/v1/search/movie.json?query={keyword}&display=6",
+                         headers={"X-Naver-Client-Id": "UvCC6ASMTNmD3iU0PkX9",
+                                  "X-Naver-Client-Secret": "imP9_GWUAj"})
+        result = r.json()
+        print(result)
+        print(keyword)
+        movies = result['items']
+
+        for movie in movies:
+
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
+            data = requests.get(movie['link'], headers=headers)
+            soup = BeautifulSoup(data.text, 'html.parser')
+            desc = soup.select_one(
+                "#content > div.article > div.section_group.section_group_frst > div:nth-child(1) > div > div > p")
+
+            genre = soup.select_one(
+                "#content > div.article > div.wide_info_area > div.mv_info > p > span:nth-child(1) > a")
+            try:
+                movie["desc"] = desc.text
+                movie["genre"] = genre.text
+            except Exception as e:
+                continue
+
+
+        return render_template('search.html', word=keyword, result=result, movies=movies, user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="login_time_expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
 
 
 
-    for movie in movies:
+@app.route('/search/save', methods=['POST'])
+def sendtoDB():
 
 
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-        data = requests.get(movie['link'], headers=headers)
-        soup = BeautifulSoup(data.text, 'html.parser')
-        desc = soup.select_one(
-            "#content > div.article > div.section_group.section_group_frst > div:nth-child(1) > div > div > p")
+
+    title_receive = request.form['title_give']
+    director_receive = request.form['director_give']
+    image_receive = request.form['image_give']
+    pubDate_receive = request.form['pubDate_give']
+    actor_receive = request.form['actor_give']
+    desc_receive = request.form['desc_give']
+    genre_receive = request.form['genre_give']
+
+    print("#####TEST #####")
+    print(title_receive)
+    print(director_receive)
+    print(image_receive)
+    print(pubDate_receive)
+    print(actor_receive)
+    print(desc_receive)
+    print(genre_receive)
 
 
-        try:
-            movie["desc"] = desc.text
-        except Exception as e:
-            continue
+    doc = {
+        "title": title_receive,
+        "director": director_receive,
+        "date": pubDate_receive,
+        "desc": desc_receive,
+        "imgurl": image_receive,
+        "star": actor_receive,
+        "genre": genre_receive
+    }
 
-    print(movies[0])
-    print(movies[1])
 
 
-    return render_template('search.html', word=keyword, result=result, movies=movies)
+
+    movie_name = db.movie.find_one({'title': request.form['title_give']})
+    print(movie_name)
 
 
+    if movie_name is None:
+        db.movie.insert_one(doc)
+        print(" DB 저장 완료 ")
+
+    else:
+        print(title_receive)
+        return jsonify({'msg': '이미 추가된 영화입니다. 메인 페이지에서 확인해주세요'})
+
+
+
+
+    movie_title = title_receive
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('headless')
+    driver = webdriver.Chrome('/Users/skylerbang/Downloads/chromedriver',
+                              chrome_options=chrome_options)
+    driver.implicitly_wait(3)
+    driver.get('https://www.youtube.com/results?search_query=' + movie_title)
+    html = driver.page_source
+    soup = BeautifulSoup(html, 'html.parser')
+    linkdata = soup.select_one(
+        '#contents > ytd-video-renderer:nth-child(1) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a:nth-child(1)')[
+        'href']
+
+    youtube_link = "https://www.youtube.com"+linkdata
+
+
+    db.movie.update_one({'title': title_receive}, {'$set': {'link': youtube_link}})
+    return jsonify({'msg': 'POST 연결되었습니다!'})
 
 
 

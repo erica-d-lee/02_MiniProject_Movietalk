@@ -18,6 +18,48 @@
 
     }
 
+
+    function godb(item){
+
+            alert("testing")
+            let title = item['title'];
+            let image = item['image'];
+            let pubDate = item['pubDate'];
+            let actor = item['actor'];
+            let director = item['director'];
+            let desc = item['desc'];
+            let genre = item['genre']
+
+            alert(title)
+
+
+           $.ajax({
+            type: "POST",
+            url: "/search/save",
+            data: {
+                title_give: title,
+                image_give: image,
+                pubDate_give: pubDate,
+                actor_give: actor,
+                director_give: director,
+                desc_give: desc,
+                genre_give: genre
+            },
+            success: function (response) {
+                alert(response['msg']);
+
+            }
+        });
+
+
+
+    }
+
+
+
+
+
+
 {% endblock %}
 
 {% block stylesheet %}
@@ -50,7 +92,7 @@
 
     {%  for  item  in result['items'] %}
     <div class="container">
-     <h1 id="word" style="display: inline;"> {{ item.title }}  </h1>
+     <h1 id="word" style="display: inline;"> {{ item.title |safe}}  </h1>
      <div class="box-wrap">
         <div class="box" >
 
@@ -58,32 +100,29 @@
 
                  <img src="{{item.image}}" style=" width: 170px; height: 180px" class="movie-img" />
             </div>
-         <button type="button" class="btn btn-secondary"> 추가하기
+         <button type="button" class="btn btn-secondary" onclick="godb({{ item }})"> 추가하기
          <i class="fa fa-plus" aria-hidden="true"></i></button>
-         <button type="button" class="btn btn-secondary"> 자세히 보기
-         <i class="fa fa-search" aria-hidden="true"></i></button>
+
 
         </div>
         <div class="box" >
-                   <h3 id="word" style="display: inline;">  출시년도 : {{  item.pubDate }} </h3>
+                   <h3 id="word" style="display: inline;">  출시년도 : {{  item.pubDate |safe}} </h3>
             <hr>
-                    <h3 id="word" style="display: inline;">  감독: {{  item.director}} </h3>
+                    <h3 id="word" style="display: inline;">  감독: {{  item.director|safe }} </h3>
             <hr>
-            <h4 id="word" style="display: inline;">   배우 :{{  item.actor }} </h4>
+            <h4 id="word" style="display: inline;">   배우 :{{  item.actor|safe }} </h4>
          </div>
     </div>
         <div class="desc">
-           <h4 id="word" style="display: inline;">   줄거리 :{{ item.desc }}  </h4>
+           <h4 id="word" style="display: inline;">   줄거리 :{{ item.desc|safe }}  </h4>
         </div>
     </div>
     {% endfor %}
-
+    </div>
 {% endblock %}
 
 
 
-</html>
-  <h1 id="word" style="display: inline;">  출시년도 : {{  result['items'][0]['pubDate']}} </h1>
 
 
 
