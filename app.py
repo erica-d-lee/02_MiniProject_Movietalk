@@ -8,6 +8,9 @@ import jwt
 from datetime import datetime, timedelta
 from selenium import webdriver
 
+from bson import ObjectId
+
+
 app = Flask(__name__)
 
 SECRET_KEY = 'MOVIETALK'
@@ -15,6 +18,12 @@ SECRET_KEY = 'MOVIETALK'
 
 client = MongoClient('localhost', 27017)
 db = client.dbmovietalk
+
+@app.route('/id_return', methods=['POST'])
+def id_return():
+    token_receive = request.cookies.get('mytoken')
+
+    return
 
 
 @app.route('/')
@@ -24,46 +33,41 @@ def main():
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
         movies = list(db.movies.find({}, {"_id": False}))
-        # for movie in movies:
-            # movie_title = movie['title']
-            # chrome_options = webdriver.ChromeOptions()
-            # chrome_options.add_argument('headless')
-            # driver = webdriver.Chrome('/Users/User/Desktop/chromedriver/chromedriver.exe',
-            #                           chrome_options=chrome_options)
-            # driver.implicitly_wait(3)
-            # driver.get('https://www.youtube.com/results?search_query=' + movie_title)
-            # html = driver.page_source
-            # soup = BeautifulSoup(html, 'html.parser')
-            # linkdata = soup.select_one(
-            #     '#contents > ytd-video-renderer:nth-child(1) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a:nth-child(1)')[
-            #     'href']
-            # movie['link'] = linkdata
         return render_template('index.html', movies=movies, user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="login_time_expired"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login"))
 
-@app.route('/detail')
-def detail():
+
+@app.route('/detail/<id>')
+def detail(id):
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        comments = list(db.comment.find({}, {"_id": False}))
-        return render_template("detail.html", comments=comments, user_info=user_info)
+        movie_info = db.movie.find_one({'_id' : ObjectId(id)})
+        print(movie_info)
+        comment_info = list(db.comment.find({},{'_id':False}))
+
+        return render_template("detail.html",  user_info=user_info, movie=movie_info, comments=comment_info)
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="login_time_expired"))
+        return redirect(url_for("login"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login"))
 
 @app.route('/api/save_comment', methods=['POST'])
 def save_comment():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    nickname = db.users.find_one({'username': payload["id"]})
+    print(nickname["nickname"])
     # 댓글 저장하기
     comment_receive = request.form["comment_give"]
-    doc = {"comment": comment_receive}
+    doc= {'nickname':nickname["nickname"], 'comment': comment_receive, 'username': payload["id"]}
     db.comment.insert_one(doc)
-    return jsonify({'result': 'success', 'msg': '저장완료'})
+    return jsonify({'result': 'success', 'msg': '입력완료'})
+
 
 @app.route('/login')
 def login():

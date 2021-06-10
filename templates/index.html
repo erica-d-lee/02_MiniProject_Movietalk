@@ -113,7 +113,7 @@
 
         .btn btn-outline-warning {
             float: right;
-            display: block;
+            display: block;}
 
         @media screen and (min-width: 1408px) {
             .container:not(.is-max-desktop):not(.is-max-widescreen) {
@@ -159,6 +159,20 @@
             alert('로그아웃!')
             window.location.href = "/login"
         }
+
+        function id_turn() {
+            $.ajax({
+                    type: "POST",
+                    url: `/api/id_return`,
+                    data: {
+                    },
+                    success: function (response) {
+                        alert(response["msg"])
+                        window.location.href = "/detail/60c1a023afdbf27839dafeab"
+                    }
+                });
+        }
+
     </script>
 </head>
 <body>

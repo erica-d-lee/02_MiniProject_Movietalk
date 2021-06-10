@@ -5,6 +5,9 @@
 
 
 {% block script %}
+
+    let today = new Date().toISOString()
+
     function sign_in() {
         let username = $("#input-username").val()
         let password = $("#input-password").val()
@@ -90,7 +93,9 @@
             data: {
                 username_give: username,
                 password_give: password,
-                nickname_give: nickname
+                nickname_give: nickname,
+                comment: "",
+                date_give: today
             },
             success: function (response) {
                 alert("회원가입을 축하드립니다!")
