@@ -24,7 +24,8 @@ MovieTALK(무비톡)
 
 
 ## 결과
-* 
+* <summary>
+  Detail
   </summary>
     <br>
 
