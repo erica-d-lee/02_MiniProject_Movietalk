@@ -183,7 +183,7 @@
                 <div class="movieinfo">
                     <h3>
                         <div style="color: orangered; font-weight: bold; font-size: 25px;"
-                             onclick="detail({{ movie }})"><u>{{ movie.title|safe }}</u></div>
+                             onclick="detail({{ movie }})"><u style="cursor:pointer;">{{ movie.title|safe }}</u></div>
                     </h3>
                     <p class="text"
                        style="width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 15px;">
@@ -195,7 +195,7 @@
                 <div class="link">
                     <a id="link" style="color: darkorange" href="{{ movie.link |safe }}" target="_blank">
                         <i class="fa fa-youtube-play" aria-hidden="true"
-                           style="color: orangered; margin-right: 7px"></i><u>'{{ movie.title|safe }}' 유튜브 영상 보러 가기</u>
+                           style="color: orangered; margin-right: 7px"></i><u>'{{ movie.title|safe }}' 유튜브 영상 리스트로 가기</u>
                     </a>
                 </div>
                 <hr>
