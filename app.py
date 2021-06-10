@@ -176,7 +176,7 @@ def search(keyword):
 @app.route('/search/save', methods=['POST'])
 def sendtoDB():
 
-    title_receive = request.form['title_give']
+    title_receive = request.form['title_give'].replace('<b>', '').replace('</b>', '')
     director_receive = request.form['director_give']
     image_receive = request.form['image_give']
     pubDate_receive = request.form['pubDate_give']
@@ -217,7 +217,7 @@ def sendtoDB():
 
     youtube_link = 'https://www.youtube.com/results?search_query=' + title_receive
     db.movie.update_one({'title': title_receive}, {'$set': {'link': youtube_link}})
-    return jsonify({'msg': ' Testing 용입니다 지워주세요 좀있다가 POST 연결되었습니다!'})
+    return jsonify({'msg': '등록이 완료되었습니다!'})
 
 
 
