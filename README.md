@@ -9,11 +9,7 @@
  
 
 ## Proejct Scopre
-* <details>
-  <summary>
-  펼쳐보기
-  </summary>
-    <br>
+
  1. Project Name 
      MovieTALK(무비톡)
 
@@ -43,23 +39,31 @@
  
  
 4. Requriementes 
+
    -Must use Jinja2 template 
+   
    -Must use JWT authentication
 
+5. Demo video
+
+ Demonstration Video : https://www.youtube.com/watch?v=8Gbv7yYv2qM
+ 
+ 
+ 
   </details>
   <br
     
   </summary>
     <br>
 
-## Result
+## Detail
 * <details>
   <summary>
    Unfold
   </summary>
     <br>
 
-    Demonstration Video : https://www.youtube.com/watch?v=8Gbv7yYv2qM
+    Working on it 
 
   </details>
   <br>
