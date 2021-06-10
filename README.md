@@ -39,7 +39,8 @@ We can share the movie and leave the comments
    Check Detail of movie 
    
    Leave Comment 
-   
+  </details> 
+ <br>
 4. Requriementes 
    -Must use Jinja2 template 
    -Must use JWT authentication
