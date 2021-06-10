@@ -25,14 +25,9 @@ MovieTALK(무비톡)
 
 ## 결과
 * 
-  <summary>
-  펼쳐보기
-  시연 영상 : 
-   https://www.youtube.com/watch?v=8Gbv7yYv2qM
-   
   </summary>
     <br>
 
-   
- 
+    
+  </details>
   <br>
