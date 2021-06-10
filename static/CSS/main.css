@@ -1,6 +1,11 @@
+* {
+    font-family: 'Noto Serif KR', serif;
+}
+
 .wrap {
     background-color: rgb(252, 207, 109);
     min-height: 100vh;
+    height: auto;
     padding-bottom: 50px;
 }
 
@@ -9,7 +14,7 @@
     height: 200px;
 
     background-color: white;
-    background-image: url('/static/movie.png');
+    background-image: url('{{ url_for("static", filename="Movie Talk.png") }}');
 
     background-position: center;
     background-size: contain;
@@ -21,28 +26,94 @@
 .container {
     width: 80%;
     max-width: 800px;
-    margin: 30px auto;
-    padding: 20px;
+    height: 470px;
+    margin: 0 auto 30px auto;
+    padding: 30px;
     background-color: white;
 
-    border: solid 1px gray;
-    border-radius: 10px;
+    border: thick double darkgray;
+    border-radius: 30px;
 }
 
-span.example {
-    color: gray;
-    font-size: 14px;
+.movieimg {
+    height: 250px;
+    width: 200px;
+    float: left;
+
+    background-position: center top;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
-.btn-sparta {
-    color: #fff;
-    background-color: #e8344e;
-    border-color: #e8344e;
+.movieinfo {
+    height: 250px;
+    width: auto;
+    margin-left: 230px;
+    word-break: break-all;
+
+    display: -webkit-box;
+    word-wrap: break-word;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.btn-outline-sparta {
-    color: #e8344e;
-    background-color: transparent;
-    background-image: none;
-    border-color: #e8344e;
+.link {
+    margin-top: 20px;
+}
+
+.line {
+    color: rgb(252, 207, 109);
+    font-weight: bold;
+}
+
+.text {
+    margin-top: 10px;
+    font-size: 17px;
+}
+
+.comments {
+    width: 600px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 15px;
+}
+
+@media screen and (min-width: 1408px) {
+    .container:not(.is-max-desktop):not(.is-max-widescreen) {
+        max-width: 800px;
+    }
+}
+
+@media screen and (min-width: 1216px) {
+    .container:not(.is-max-desktop) {
+        max-width: 800px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .container {
+        max-width: 800px;
+    }
+}
+
+.user-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.user-container > span {
+    margin-right: 15px;
+}
+
+.user-container > div {
+    width: 150px;
+}
+
+.is-color {
+    color: #4F5A5F !important;
 }

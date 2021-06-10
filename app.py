@@ -8,6 +8,9 @@ import jwt
 from datetime import datetime, timedelta
 from selenium import webdriver
 
+from bson import ObjectId
+
+
 app = Flask(__name__)
 
 SECRET_KEY = 'MOVIETALK'
@@ -15,6 +18,7 @@ SECRET_KEY = 'MOVIETALK'
 
 client = MongoClient('localhost', 27017)
 db = client.dbmovietalk
+
 
 
 @app.route('/')
@@ -27,10 +31,11 @@ def main():
         list_movies = []
         for movie in movies:
             movie_id = movie['_id']
-            rmovies = list(db.movie.find({"_id": movie_id}, {"_id": False}))
+            rmovies = list(db.movie.find({"_id": movie_id}))
             comments = list(db.comment.find({"movieid": movie_id}, {"_id": False}))
             for rmovie in rmovies:
                 rmovie['comments'] = comments
+                rmovie["_id"] = str(rmovie["_id"])
             list_movies.append(rmovies[0])
         result = sorted(list_movies, key=lambda x:len(x['comments']), reverse=True)
         return render_template('index.html', movies=result, user_info=user_info)
@@ -39,26 +44,34 @@ def main():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login"))
 
-@app.route('/detail')
-def detail():
+@app.route('/detail/<id>')
+def detail(id):
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        comments = list(db.comment.find({}, {"_id": False}))
-        return render_template("detail.html", comments=comments, user_info=user_info)
+        movie_info = db.movie.find_one({'_id' : ObjectId(id)})
+        print(movie_info)
+        comment_info = list(db.comment.find({},{'_id':False}))
+
+        return render_template("detail.html",  user_info=user_info, movie=movie_info, comments=comment_info)
     except jwt.ExpiredSignatureError:
-        return redirect(url_for("login", msg="login_time_expired"))
+        return redirect(url_for("login"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login"))
 
 @app.route('/api/save_comment', methods=['POST'])
 def save_comment():
+    token_receive = request.cookies.get('mytoken')
+    payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+    nickname = db.users.find_one({'username': payload["id"]})
+    print(nickname["nickname"])
     # 댓글 저장하기
     comment_receive = request.form["comment_give"]
-    doc = {"comment": comment_receive}
+    doc= {'nickname':nickname["nickname"], 'comment': comment_receive, 'username': payload["id"]}
     db.comment.insert_one(doc)
-    return jsonify({'result': 'success', 'msg': '저장완료'})
+    return jsonify({'result': 'success', 'msg': '입력완료'})
+
 
 @app.route('/login')
 def login():
@@ -198,6 +211,7 @@ def sendtoDB():
     else:
         print(title_receive)
         return jsonify({'msg': '이미 추가된 영화입니다. 메인 페이지에서 확인해주세요'})
+
 
 
 

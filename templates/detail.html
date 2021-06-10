@@ -17,9 +17,6 @@
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
             crossorigin="anonymous"></script>
 
-    <!-- 구글폰트 -->
-
-    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
     <!-- Bulma -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
@@ -52,15 +49,14 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 
-
     <title>상세 페이지</title>
 
 
     <style>
         * {
-            font-family: 'Nanum Pen Script', cursive;
-            font-size: x-large;
+            font-family: 'Noto Serif KR', serif;
         }
+
         .banner {
             width: 100%;
             height: 200px;
@@ -74,57 +70,13 @@
 
             cursor: pointer;
         }
+
         .wrap {
             background-color: rgb(252, 207, 109);
             min-height: 100vh;
             padding-bottom: 50px;
         }
 
-        .price-item3 {
-            width: 500px;
-            height: 500px;
-            border: 1px solid black;
-        }
-
-        .price-item4 {
-            width: 300px;
-            height: 500px;
-            border: 1px solid black;
-        }
-
-        .price-item5 {
-            width: 500px;
-            height: 50px;
-            border: 1px solid black;
-            text-align: center;
-        }
-
-        .price-item6 {
-            width: 300px;
-            height: 50px;
-            border: 1px solid black;
-        }
-
-        .prices {
-            display: flex;
-        }
-
-        .main {
-            width: 800px;
-            margin: auto;
-        }
-
-        .movie_pic {
-            background-image: url("https://movie-phinf.pstatic.net/20210512_139/1620799657168vGIqq_JPEG/movie_image.jpg");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
-        }
-
-        .article {
-            width: 1000px;
-            margin: auto;
-        }
 
         @media screen and (min-width: 1408px) {
             .container:not(.is-max-desktop):not(.is-max-widescreen) {
@@ -151,23 +103,25 @@
             padding: 10px;
         }
 
-        .user-container>span {
+        .user-container > span {
             margin-right: 15px;
         }
 
-        .user-container>div {
+        .user-container > div {
             width: 150px;
         }
 
         .is-color {
             color: #4F5A5F !important;
         }
+
+
     </style>
 
 
     <script>
-        $(document).ready(function () {
-        })
+
+
 
         function save_comment() {
             let comment_gives = $("#comment").val()
@@ -175,29 +129,21 @@
                 alert("댓글을 입력해주세요.")
             } else {
                 $.ajax({
-                type: "POST",
-                url: `/api/save_comment`,
-                data: {
-                    comment_give: comment_gives
-                },
-                success: function (response) {
-                    alert(response["msg"])
-                    window.location.href = "/detail"
-                }
-            });
+                    type: "POST",
+                    url: `/api/save_comment`,
+                    data: {
+                        comment_give: comment_gives
+                    },
+                    success: function (response) {
+                        alert(response["msg"])
+                        window.location.href = "/detail/{{ movie['_id'] }}"
+                    }
+                });
             }
 
         }
 
-        $.ajax({
-            type: "POST",
-            url: "/memo",
-            data: {url_give: url, comment_give: comment},
-            success: function (response) { // 성공하면
-                alert(response["msg"]);
-                window.location.reload()
-            }
-        })
+
 
         function sign_out() {
             $.removeCookie('mytoken', {path: '/'});
@@ -212,92 +158,81 @@
 <div class="wrap">
     <div class="banner" onclick="window.location.href = '/'"></div>
     <div class="user-container">
-        <span>{{ user_info.username }}님</span>
+
+
+        <span><span style="color: orangered; font-weight: bold;">{{ user_info.username }}</span>님</span>
         <div class="button level-item has-text-centered is-color is-outlined" aria-label="logout" onclick="sign_out()">
-            로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div>
-    </div>
-    <div class="main">
-        <div class="prices">
-            <div class="price-item3 movie_pic">
-
-            </div>
-            <div class="price-item4" id="article">
-                모든 것은 악마가 시켰다!
-                1981년, 미국 역사상 최초로 잔혹한 살인사건의 용의자가 악마가 살해하도록 시켰다고 주장하는 초유의 사태가 일어난다! 그리고 사건의 배후에는 악마에게 빙의된 소년이 있었는데…
-                초자연 현상 연구가 워렌 부부의 사건 파일 중 여전히 미스터리로 남아있는 실화!
-                진실 혹은 거짓? 살인사건의 범인, 인간인가 악마인가...
-            </div>
-        </div>
-    </div>
-
-    <div class="main">
-        <div class="prices">
-            <div class="price-item5">
-                <h6>영화제목/별점/주인공</h6>
-            </div>
-            <div class="price-item6">
-            </div>
+            로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span>
         </div>
     </div>
 
 
-    <div class="article">
-        <article class="media">
-            <div class="media-content">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:600px; margin:auto; ">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img class="d-block w-100"
 
-                {% for comment in comments %}
-                    <article class="media">
-                        <div class="media-content">
-                            <div class="content">
-                                <p>
-                                    <strong>닉네임3</strong>
-                                    <br>
-                                    {{ comment.comment }}
-                                    <br>
-                                </p>
-                            </div>
+                     src="{{ movie.imgurl }}"
+                     alt="First slide">
+            </div>
+            <div class="carousel-item">
+                <h1 style="font-size: xxx-large">{{ movie.title|safe }}<span style="font-size:small;">{{ movie.genre|safe }}</span></h1>
+                <p style="text-align: right;">{{ movie.star|safe }}</p>
+                <p style="text-align: right;">감독 : {{ movie.director|safe }}</p>
+                <h1 style="font-size: xx-large">줄거리</h1>
+                <p>{{ movie.desc|safe }}</p>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+<div style="height: 50px"></div>
+
+
+    {% for comment in comments %}
+        <div id="post-box" class="container">
+            <div class="box">
+                <article class="media">
+                    <div class="media-content">
+                        <div class="content">
+                            <p>
+                                <strong>{{ comment.nickname }}</strong>
+                                <br>
+                                {{ comment.comment }}
+                            </p>
                         </div>
-                    </article>
-                {% endfor %}
-
+                    </div>
+                </article>
             </div>
-        </article>
-    </div>
+        </div>
+        <br>
+    {% endfor %}
 
-
-    <div class="article">
+<section class="section" style="width:800px; margin:auto;">
         <article class="media">
             <div class="media-content">
                 <div class="field">
-                    <p class="control">
-                        <textarea id="comment" class="textarea" placeholder="댓글을 입력하세요..."></textarea>
-                    </p>
-                </div>
-                <div class="field">
-                    <p class="control" style="margin-bottom: 20px">
-                        <button class="button" onclick="save_comment()">댓글 입력</button>
-                    </p>
+                    <input id="comment" class="input is-rounded" placeholder="이 영화에 대한 한줄평은?">
                 </div>
             </div>
+            <p>&nbsp;</p><i class="fa fa-comments-o fa-2x" aria-hidden="true" onclick="save_comment()"></i>
         </article>
-    </div>
+    </section>
 
 </div>
 
 
-
-<p>
-      <div class="tile is-parent is-vertical">
-        <article class="tile is-child notification is-primary is-3">
-          <p class="title"> 모든 것은 악마가 시켰다!
-                1981년, 미국 역사상 최초로 잔혹한 살인사건의 용의자가 악마가 살해하도록 시켰다고 주장하는 초유의 사태가 일어난다! 그리고 사건의 배후에는 악마에게 빙의된 소년이 있었는데…
-                초자연 현상 연구가 워렌 부부의 사건 파일 중 여전히 미스터리로 남아있는 실화!
-                진실 혹은 거짓? 살인사건의 범인, 인간인가 악마인가...</p>
-          <p class="subtitle">Top tile</p>
-        </article>
-      </div>
-<div class="price-item3 movie_pic"></div>
-</p>
 </body>
 
 </html>

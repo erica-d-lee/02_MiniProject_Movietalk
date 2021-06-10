@@ -1,7 +1,12 @@
+* {
+    font-family: 'Noto Serif KR', serif;
+}
+
 .wrap {
     background-color: rgb(252, 207, 109);
     min-height: 100vh;
     padding-bottom: 50px;
+
 }
 
 .banner {
@@ -25,15 +30,16 @@
     padding: 20px;
     background-color: white;
 
-    border: solid 2px gray;
+    border: thick double darkgray;
+    border-radius: 30px;
     padding-auto: 20px;
-    border-radius: 10px;
 }
 
 span.example {
     color: gray;
     font-size: 14px;
 }
+
 
 .btn-sparta {
     color: #fff;
@@ -51,14 +57,15 @@ span.example {
 
 
 .box-wrap {
-    display :flex;
-    height :300px;
+    display: flex;
+    height: 300px;
     width: 550px;
     /*border: 1px solid black;
     border-radius: 15px;*/
-    margin : 1px;
+    margin: 1px;
     /*justify-content: center;*/
 }
+
 
 .box{
     margin-top:20px;
@@ -68,14 +75,10 @@ span.example {
 
 }
 
-.movie-img{
+.movie-img {
     margin-left: 20px;
-    margin-top:20px;
+    margin-top: 20px;
 }
-button{
+
+button {
     margin-top: 10px;
-
-}
-.desc{
-
-}
