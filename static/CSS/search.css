@@ -37,12 +37,12 @@ span.example {
 
 .btn-sparta {
     color: #fff;
-    background-color: #e8344e;
+
     border-color: #e8344e;
 }
 
 .btn-outline-sparta {
-    color: #e8344e;
+
     background-color: transparent;
     background-image: none;
     border-color: #e8344e;
@@ -54,7 +54,6 @@ span.example {
     display :flex;
     height :300px;
     width: 550px;
-    background-color: purple;
     /*border: 1px solid black;
     border-radius: 15px;*/
     margin : 1px;
@@ -65,7 +64,7 @@ span.example {
     margin-top:20px;
     width:280px;
     height:250px;
-    background-color: yellow;
+
 
 }
 
@@ -78,5 +77,5 @@ button{
 
 }
 .desc{
-    background-color: #e8344e;
+
 }
