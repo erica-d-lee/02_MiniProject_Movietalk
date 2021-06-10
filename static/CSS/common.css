@@ -16,6 +16,10 @@
     }
 }
 
+* {
+    font-family: 'Noto Serif KR', serif;
+}
+
 .user-container {
     display: flex;
     align-items: center;

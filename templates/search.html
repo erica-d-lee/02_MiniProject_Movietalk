@@ -54,25 +54,26 @@
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+
 {% endblock %}
 
 {% block usercontent %}
-    <span>{{ user_info.username }}님</span>
+    <span><span style="color: orangered; font-weight: bold;">{{ user_info.username }}</span>님</span>
     <div class="button level-item has-text-centered is-sparta is-outlined" aria-label="logout" onclick="sign_out()">
     로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div>
 {% endblock %}
 
 {% block content %}
-    <h1> 영화를 추천해주세요 </h1>
+    <h1 style="color: darkorange; font-weight: bold; font-size: 25px; text-align: center;"> 영화를 추천해주세요 <i class="fa fa-film" aria-hidden="true"></i></h1>
     <hr></hr>
     <p class="important">
 
     <div class="form-group">
-        <label for="post-url"> 영화 제목 을 넣어주세요.</label>
+        <label for="post-url" style="color: darkorange; font-weight: bold;"> 영화 제목을 넣어주세요 </label>
         <input id="input-word" class="form-control" placeholder="">
     </div>
     </p>
-    <button type="button" class="btn btn-secondary" onclick="find_movie()"> 영화 찾기
+    <button type="button" class="btn btn-secondary" style="background-color: orangered; border-color: orangered;" onclick="find_movie()"> 영화 찾기
         <i class="fa fa-search" aria-hidden="true"></i></button>
 
 {% endblock %}

@@ -1,7 +1,12 @@
+* {
+    font-family: 'Noto Serif KR', serif;
+}
+
 .wrap {
     background-color: rgb(252, 207, 109);
     min-height: 100vh;
     padding-bottom: 50px;
+
 }
 
 .banner {
@@ -25,9 +30,9 @@
     padding: 20px;
     background-color: white;
 
-    border: solid 2px gray;
+    border: thick double darkgray;
+    border-radius: 30px;
     padding-auto: 20px;
-    border-radius: 10px;
 }
 
 span.example {
@@ -35,48 +40,35 @@ span.example {
     font-size: 14px;
 }
 
-.btn-sparta {
-    color: #fff;
-    background-color: #e8344e;
-    border-color: #e8344e;
-}
-
-.btn-outline-sparta {
-    color: #e8344e;
-    background-color: transparent;
-    background-image: none;
-    border-color: #e8344e;
-}
-
-
-
 .box-wrap {
-    display :flex;
-    height :300px;
+    display: flex;
+    height: 300px;
     width: 550px;
     background-color: purple;
     /*border: 1px solid black;
     border-radius: 15px;*/
-    margin : 1px;
+    margin: 1px;
     /*justify-content: center;*/
 }
 
-.box{
-    margin-top:20px;
-    width:280px;
-    height:250px;
+.box {
+    margin-top: 20px;
+    width: 280px;
+    height: 250px;
     background-color: yellow;
 
 }
 
-.movie-img{
+.movie-img {
     margin-left: 20px;
-    margin-top:20px;
+    margin-top: 20px;
 }
-button{
+
+button {
     margin-top: 10px;
 
 }
-.desc{
+
+.desc {
     background-color: #e8344e;
 }
