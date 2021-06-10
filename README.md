@@ -14,43 +14,40 @@
   펼쳐보기
   </summary>
     <br>
-
-     1. Project Name 
+ 1. Project Name 
      MovieTALK(무비톡)
 
-     2. Project Background
+ 2. Project Background
 
      Do you want to share your favorite movie with your friends? 
      Please ask them to join our MovieTalk 
      We can share the movie and leave the comments 
 
-     3. Implemented Features 
+3. Implemented Features 
 
-        Sign up
-          Create an Account
-             -Check ID
-             -Check PW 
-          Log in
+    Sign up
+      Create an Account
+         -Check ID
+         -Check PW 
+      Log in
 
-          Log out 
+      Log out 
 
-          Search Movie by Title
+      Search Movie by Title
 
-          Add Movie in to Main Feed
+      Add Movie in to Main Feed
 
-          Check Detail of movie 
+      Check Detail of movie 
 
-          Leave Comment 
-  </details>
-  <br>
-
-   
-  </details> 
- <br>
+      Leave Comment 
+ 
+ 
 4. Requriementes 
    -Must use Jinja2 template 
    -Must use JWT authentication
 
+  </details>
+  <br
     
   </summary>
     <br>
