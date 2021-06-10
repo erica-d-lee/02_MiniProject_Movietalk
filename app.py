@@ -52,7 +52,7 @@ def detail(id):
         user_info = db.users.find_one({"username": payload["id"]})
         movie_info = db.movie.find_one({'_id' : ObjectId(id)})
         print(movie_info)
-        comment_info = list(db.comment.find({},{'_id':False}))
+        comment_info = list(db.comment.find({'title': id}))
 
         return render_template("detail.html",  user_info=user_info, movie=movie_info, comments=comment_info)
     except jwt.ExpiredSignatureError:
@@ -68,7 +68,8 @@ def save_comment():
     print(nickname["nickname"])
     # 댓글 저장하기
     comment_receive = request.form["comment_give"]
-    doc= {'nickname':nickname["nickname"], 'comment': comment_receive, 'username': payload["id"]}
+    title_receive = request.form["title_give"]
+    doc= {'nickname':nickname["nickname"], 'comment': comment_receive, 'username': payload["id"], 'title': title_receive}
     db.comment.insert_one(doc)
     return jsonify({'result': 'success', 'msg': '입력완료'})
 
@@ -176,7 +177,7 @@ def search(keyword):
 @app.route('/search/save', methods=['POST'])
 def sendtoDB():
 
-    title_receive = request.form['title_give']
+    title_receive = request.form['title_give'].replace('<b>', '').replace('</b>', '')
     director_receive = request.form['director_give']
     image_receive = request.form['image_give']
     pubDate_receive = request.form['pubDate_give']
@@ -217,7 +218,7 @@ def sendtoDB():
 
     youtube_link = 'https://www.youtube.com/results?search_query=' + title_receive
     db.movie.update_one({'title': title_receive}, {'$set': {'link': youtube_link}})
-    return jsonify({'msg': ' Testing 용입니다 지워주세요 좀있다가 POST 연결되었습니다!'})
+    return jsonify({'msg': '등록이 완료되었습니다!'})
 
 
 

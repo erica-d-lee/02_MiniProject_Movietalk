@@ -122,7 +122,6 @@
     <script>
 
 
-
         function save_comment() {
             let comment_gives = $("#comment").val()
             if (comment_gives == "") {
@@ -132,7 +131,8 @@
                     type: "POST",
                     url: `/api/save_comment`,
                     data: {
-                        comment_give: comment_gives
+                        comment_give: comment_gives,
+                        title_give: "{{ movie._id }}"
                     },
                     success: function (response) {
                         alert(response["msg"])
@@ -142,7 +142,6 @@
             }
 
         }
-
 
 
         function sign_out() {
@@ -167,7 +166,7 @@
     </div>
 
 
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:600px; margin:auto; ">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="width:400px; margin:auto; ">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -180,10 +179,13 @@
                      alt="First slide">
             </div>
             <div class="carousel-item">
-                <h1 style="font-size: xxx-large">{{ movie.title|safe }}<span style="font-size:small;">{{ movie.genre|safe }}</span></h1>
+                <h1 style="font-size: x-large">{{ movie.title|safe }}<span
+                        style="font-size:xx-small;">{{ movie.genre|safe }}</span></h1>
+                <div style="height: 50px"></div>
                 <p style="text-align: right;">{{ movie.star|safe }}</p>
                 <p style="text-align: right;">감독 : {{ movie.director|safe }}</p>
-                <h1 style="font-size: xx-large">줄거리</h1>
+                <div style="height: 20px"></div>
+                <h1 style="font-size: large">줄거리</h1>
                 <p>{{ movie.desc|safe }}</p>
             </div>
         </div>
@@ -197,7 +199,7 @@
         </a>
     </div>
 
-<div style="height: 50px"></div>
+    <div style="height: 50px"></div>
 
 
     {% for comment in comments %}
@@ -219,7 +221,7 @@
         <br>
     {% endfor %}
 
-<section class="section" style="width:800px; margin:auto;">
+    <section class="section" style="width:800px; margin:auto;">
         <article class="media">
             <div class="media-content">
                 <div class="field">
