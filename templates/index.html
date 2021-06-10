@@ -57,8 +57,8 @@
         .container {
             width: 80%;
             max-width: 800px;
-            height: 450px;
-            margin: 30px auto 30px auto;
+            height: 470px;
+            margin: 0 auto 30px auto;
             padding: 30px;
             background-color: white;
 
@@ -91,7 +91,7 @@
         }
 
         .link {
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .line {
@@ -109,11 +109,8 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            font-size: 15px;
         }
-
-        .btn btn-outline-warning {
-            float: right;
-            display: block;}
 
         @media screen and (min-width: 1408px) {
             .container:not(.is-max-desktop):not(.is-max-widescreen) {
@@ -140,11 +137,11 @@
             padding: 10px;
         }
 
-        .user-container>span {
+        .user-container > span {
             margin-right: 15px;
         }
 
-        .user-container>div {
+        .user-container > div {
             width: 150px;
         }
 
@@ -160,17 +157,8 @@
             window.location.href = "/login"
         }
 
-        function id_turn() {
-            $.ajax({
-                    type: "POST",
-                    url: `/api/id_return`,
-                    data: {
-                    },
-                    success: function (response) {
-                        alert(response["msg"])
-                        window.location.href = "/detail/60c1a023afdbf27839dafeab"
-                    }
-                });
+        function detail(movie) {
+            window.location.href = `/detail/${movie["_id"]}`
         }
 
     </script>
@@ -178,45 +166,58 @@
 <body>
 <div class="wrap">
     <div class="banner" onclick="window.location.href = '/'"></div>
-    <button type="button" class="btn btn-outline-secondary">영화 추천하기</button>
     <div class="user-container">
-        <span>{{ user_info.username }}님</span>
+        <span><span style="color: orangered; font-weight: bold;">{{ user_info.username }}</span>님</span>
+        <div class="button level-item has-text-centered is-color is-outlined" aria-label="logout"
+             onclick="window.location.href='/search'" style="margin-right: 15px;">
+            영화 추가&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-plus-square-o"
+                                                                  aria-hidden="true"></i></span></div>
         <div class="button level-item has-text-centered is-color is-outlined" aria-label="logout" onclick="sign_out()">
-            로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div>
+            로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span>
+        </div>
     </div>
     {% for movie in movies %}
-    <div>
-        <div id="container" class="container">
-            <div class="movieimg" style="background-image: url('{{ movie.imgurl }}');"></div>
-            <div class="movieinfo">
-                <h3><a style="color: orangered; font-weight: bold"
-                       href="#"><u>{{ movie.title }}</u></a></h3>
-                <p class="text" style="width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                    장르: {{ movie.info.genre }}<span class="line">  ||  </span>
-                    개봉일: {{ movie.info.date }}<br>감독: {{ movie.info.director }}<span class="line">  ||  </span>출연: {{
-                    movie.info.star }}</p>
-                <p>{{ movie.info.desc }}</p>
-            </div>
-            <div class="link">
-                <a id="link" style="color: darkorange" href="{{ movie.link }}" target="_blank">
-                    <i class="fa fa-youtube-play" aria-hidden="true" style="color: orangered; margin-right: 5px"></i><u>'{{
-                    movie.title }}' 유튜브 영상 보러 가기</u>
-                </a>
-            </div>
-            <hr>
-            <div id="comments" class="comments">
-                <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
-                    <mark>{{ movie.comments[0].nickname }}</mark>
-                    : {{ movie.comments[0].comment }}
-                </p>
-                <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
-                    <mark>{{ movie.comments[1].nickname }}</mark>
-                    : {{ movie.comments[1].comment }}
-                </p>
+        <div>
+            <div id="container" class="container">
+                <div class="movieimg" style="background-image: url('{{ movie.imgurl |safe }}');"></div>
+                <div class="movieinfo">
+                    <h3>
+                        <div style="color: orangered; font-weight: bold; font-size: 25px;"
+                             onclick="detail({{ movie }})"><u>{{ movie.title|safe }}</u></div>
+                    </h3>
+                    <p class="text"
+                       style="width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 15px;">
+                        장르: {{ movie.genre }}<span class="line">  ||  </span>
+                        개봉일: {{ movie.date }}<br>감독: {{ movie.director }}<span
+                            class="line">  ||  </span>출연: {{ movie.star }}</p>
+                    <p>{{ movie.desc }}</p>
+                </div>
+                <div class="link">
+                    <a id="link" style="color: darkorange" href="{{ movie.link |safe }}" target="_blank">
+                        <i class="fa fa-youtube-play" aria-hidden="true"
+                           style="color: orangered; margin-right: 7px"></i><u>'{{ movie.title|safe }}' 유튜브 영상 보러 가기</u>
+                    </a>
+                </div>
+                <hr>
+                <div id="comments" class="comments">
+                    {% if movie.comments[0] %}
+                        <p style="margin-bottom: 12px"><i class="fa fa-user" aria-hidden="true"
+                                                          style="margin-right: 5px; color: darkorange;"></i>
+                            <mark>{{ movie.comments[0].nickname }}</mark>
+                            : {{ movie.comments[0].comment }}
+                        </p>
+                    {% endif %}
+                    {% if movie.comments[1] %}
+                        <p><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px; color: darkorange;"></i>
+                            <mark>{{ movie.comments[1].nickname }}</mark>
+                            : {{ movie.comments[1].comment }}
+                        </p>
+                    {% endif %}
+                </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
+    {% endfor %}
 </div>
 </body>
+
 </html>

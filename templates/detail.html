@@ -140,7 +140,7 @@
                     },
                     success: function (response) {
                         alert(response["msg"])
-                        window.location.href = "/detail/60c1a023afdbf27839dafeab"
+                        window.location.href = "/detail/{{ movie['_id'] }}"
                     }
                 });
             }
@@ -181,11 +181,11 @@
                      alt="First slide">
             </div>
             <div class="carousel-item">
-                <h1 style="font-size: xxx-large">{{ movie.title }}<span style="font-size:small;">{{ movie.genre }}</span></h1>
-                <p style="text-align: right;">{{ movie.star }}</p>
-                <p style="text-align: right;">감독 : {{ movie.director }}</p>
+                <h1 style="font-size: xxx-large">{{ movie.title|safe }}<span style="font-size:small;">{{ movie.genre|safe }}</span></h1>
+                <p style="text-align: right;">{{ movie.star|safe }}</p>
+                <p style="text-align: right;">감독 : {{ movie.director|safe }}</p>
                 <h1 style="font-size: xx-large">줄거리</h1>
-                <p>test1{{ movie.desc }}</p>
+                <p>{{ movie.desc|safe }}</p>
             </div>
         </div>
         <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">

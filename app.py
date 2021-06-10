@@ -19,11 +19,6 @@ SECRET_KEY = 'MOVIETALK'
 client = MongoClient('localhost', 27017)
 db = client.dbmovietalk
 
-@app.route('/id_return', methods=['POST'])
-def id_return():
-    token_receive = request.cookies.get('mytoken')
-
-    return
 
 
 @app.route('/')
@@ -32,13 +27,24 @@ def main():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        movies = list(db.movies.find({}, {"_id": False}))
-        return render_template('index.html', movies=movies, user_info=user_info)
+        movies = list(db.movie.find({}))
+        list_movies = []
+        for movie in movies:
+            movie_id = movie['_id']
+            rmovies = list(db.movie.find({"_id": movie_id}))
+            comments = list(db.comment.find({"movieid": movie_id}, {"_id": False}))
+            for rmovie in rmovies:
+                rmovie['comments'] = comments
+                rmovie["_id"] = str(rmovie["_id"])
+            print("sdfdsf")
+            print(list_movies)
+            list_movies.append(rmovies[0])
+        result = sorted(list_movies, key=lambda x:len(x['comments']), reverse=True)
+        return render_template('index.html', movies=result, user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="login_time_expired"))
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login"))
-
 
 @app.route('/detail/<id>')
 def detail(id):
@@ -117,20 +123,30 @@ def check_dup():
     exists = bool(db.users.find_one({"username": username_receive}))
     return jsonify({'result': 'success', 'exists': exists})
 
-
-
-@app.route('/search/<keyword>', methods=['GET'])
-def search(keyword):
+@app.route('/search', methods=['GET'])
+def search_no_keyword():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
-        r = requests.get(f"https://openapi.naver.com/v1/search/movie.json?query={keyword}&display=20",
+        return render_template('search.html', user_info=user_info)
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="login_time_expired"))
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login"))
+
+@app.route('/search/<keyword>', methods=['GET'])
+def search(keyword):
+
+    token_receive = request.cookies.get('mytoken')
+    try:
+        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        user_info = db.users.find_one({"username": payload["id"]})
+
+        r = requests.get(f"https://openapi.naver.com/v1/search/movie.json?query={keyword}&display=6",
                          headers={"X-Naver-Client-Id": "UvCC6ASMTNmD3iU0PkX9",
                                   "X-Naver-Client-Secret": "imP9_GWUAj"})
         result = r.json()
-        print(result)
-        print(keyword)
         movies = result['items']
 
         for movie in movies:
@@ -142,14 +158,16 @@ def search(keyword):
             desc = soup.select_one(
                 "#content > div.article > div.section_group.section_group_frst > div:nth-child(1) > div > div > p")
 
+            genre = soup.select_one(
+                "#content > div.article > div.wide_info_area > div.mv_info > p > span:nth-child(1) > a")
+
+            movie["director"] = movie["director"].rstrip("|")
+            movie["actor"] = movie["actor"].rstrip("|")
             try:
                 movie["desc"] = desc.text
+                movie["genre"] = genre.text
             except Exception as e:
                 continue
-
-        print(movies[0])
-        print(movies[1])
-
         return render_template('search.html', word=keyword, result=result, movies=movies, user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="login_time_expired"))
@@ -157,14 +175,67 @@ def search(keyword):
         return redirect(url_for("login"))
 
 
+@app.route('/search/save', methods=['POST'])
+def sendtoDB():
+
+    title_receive = request.form['title_give']
+    director_receive = request.form['director_give']
+    image_receive = request.form['image_give']
+    pubDate_receive = request.form['pubDate_give']
+    actor_receive = request.form['actor_give']
+    desc_receive = request.form['desc_give']
+    genre_receive = request.form['genre_give']
+
+    print("#####TEST #####")
+    print(title_receive)
+    print(director_receive)
+    print(image_receive)
+    print(pubDate_receive)
+    print(actor_receive)
+    print(desc_receive)
+    print(genre_receive)
+
+    doc = {
+        "title": title_receive,
+        "director": director_receive,
+        "date": pubDate_receive,
+        "desc": desc_receive,
+        "imgurl": image_receive,
+        "star": actor_receive,
+        "genre": genre_receive
+    }
+
+    movie_name = db.movie.find_one({'title': request.form['title_give']})
+
+    if movie_name is None:
+        db.movie.insert_one(doc)
+        print(" DB 저장 완료 ")
+    else:
+        print(title_receive)
+        return jsonify({'msg': '이미 추가된 영화입니다. 메인 페이지에서 확인해주세요'})
 
 
-
+    # movie_title = title_receive
+    # chrome_options = webdriver.ChromeOptions()
+    # chrome_options.add_argument('headless')
+    # driver = webdriver.Chrome('/Users/User/Desktop/chromedriver/chromedriver.exe',
+    #                           chrome_options=chrome_options)
+    # # / Users / skylerbang / Downloads / chromedriver
+    # driver.implicitly_wait(3)
+    # driver.get('https://www.youtube.com/results?search_query=' + movie_title)
+    # html = driver.page_source
+    # soup = BeautifulSoup(html, 'html.parser')
+    # linkdata = soup.select_one('#contents > ytd-video-renderer:nth-child(1) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a:nth-child(1)')[
+    #     'href']
+    #
+    #
+    # youtube_link = "https://www.youtube.com"+linkdata
+    # db.movie.update_one({'title': title_receive}, {'$set': {'link': youtube_link}})
+    return jsonify({'msg': 'POST 연결되었습니다!'})
 
 
 
 if __name__ == '__main__':
-
    app.run('0.0.0.0',port=5000,debug=True)
 
 
