@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
               crossorigin="anonymous">
+        <!-- Bulma CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -35,7 +37,10 @@
 <body>
 
 <div class="wrap">
-    <div class="banner" onclick="window.location.href = '/'">
+    <div class="banner" onclick="window.location.href = '/'"></div>
+    <div class="user-container">
+        {% block usercontent %}
+        {% endblock %}
     </div>
 
     <div class="container">

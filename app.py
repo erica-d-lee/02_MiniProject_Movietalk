@@ -23,8 +23,10 @@ def main():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
+
         movies = list(db.movie.find({}, {"_id": False}))
         print(movies)
+
         return render_template('index.html', movies=movies, user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="login_time_expired"))
@@ -109,7 +111,9 @@ def search(keyword):
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
         user_info = db.users.find_one({"username": payload["id"]})
+
         r = requests.get(f"https://openapi.naver.com/v1/search/movie.json?query={keyword}&display=6",
+
                          headers={"X-Naver-Client-Id": "UvCC6ASMTNmD3iU0PkX9",
                                   "X-Naver-Client-Secret": "imP9_GWUAj"})
         result = r.json()
@@ -133,8 +137,6 @@ def search(keyword):
                 movie["genre"] = genre.text
             except Exception as e:
                 continue
-
-
         return render_template('search.html', word=keyword, result=result, movies=movies, user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="login_time_expired"))
@@ -193,7 +195,6 @@ def sendtoDB():
 
 
 
-
     movie_title = title_receive
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('headless')
@@ -207,9 +208,8 @@ def sendtoDB():
         '#contents > ytd-video-renderer:nth-child(1) > div:nth-child(1) > ytd-thumbnail:nth-child(1) > a:nth-child(1)')[
         'href']
 
+
     youtube_link = "https://www.youtube.com"+linkdata
-
-
     db.movie.update_one({'title': title_receive}, {'$set': {'link': youtube_link}})
     return jsonify({'msg': 'POST 연결되었습니다!'})
 
