@@ -55,7 +55,7 @@ def detail(id):
         user_info = db.users.find_one({"username": payload["id"]})
         movie_info = db.movie.find_one({'_id' : ObjectId(id)})
         print(movie_info)
-        comment_info = list(db.comment.find({},{'_id':False}))
+        comment_info = list(db.comment.find({'title': id}))
 
         return render_template("detail.html",  user_info=user_info, movie=movie_info, comments=comment_info)
     except jwt.ExpiredSignatureError:
@@ -71,7 +71,8 @@ def save_comment():
     print(nickname["nickname"])
     # 댓글 저장하기
     comment_receive = request.form["comment_give"]
-    doc= {'nickname':nickname["nickname"], 'comment': comment_receive, 'username': payload["id"]}
+    title_receive = request.form["title_give"]
+    doc= {'nickname':nickname["nickname"], 'comment': comment_receive, 'username': payload["id"], 'title': title_receive}
     db.comment.insert_one(doc)
     return jsonify({'result': 'success', 'msg': '입력완료'})
 
