@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -171,18 +172,18 @@
     {% for movie in movies %}
     <div>
         <div id="container" class="container">
-            <div class="movieimg" style="background-image: url('{{ movie.imgurl }}');"></div>
+            <div class="movieimg" style="background-image: url('{{ movie.imgurl }}');"><img src="{{movie.image|safe}}" style=" width: 170px; height: 180px" class="movie-img" /></div>
             <div class="movieinfo">
                 <h3><a style="color: orangered; font-weight: bold; font-size: 25px;"
-                       href="#"><u>{{ movie.title }}</u></a></h3>
-                <p class="text" style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 15px;">
+                       href="#"><u>{{ movie.title|safe }}</u></a></h3>
+                <p class="text" style="width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 15px;">
                     장르: {{ movie.genre }}<span class="line">  ||  </span>
                     개봉일: {{ movie.date }}<br>감독: {{ movie.director }}<span class="line">  ||  </span>출연: {{
                     movie.star }}</p>
                 <p>{{ movie.desc }}</p>
             </div>
             <div class="link">
-                <a id="link" style="color: darkorange" href="{{ movie.link }}" target="_blank">
+                <a id="link" style="color: darkorange" href="{{ movie.link |safe}}" target="_blank">
                     <i class="fa fa-youtube-play" aria-hidden="true" style="color: orangered; margin-right: 7px"></i><u>'{{
                     movie.title }}' 유튜브 영상 보러 가기</u>
                 </a>
@@ -203,4 +204,5 @@
     {% endfor %}
 </div>
 </body>
+
 </html>
