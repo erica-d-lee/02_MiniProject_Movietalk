@@ -132,7 +132,7 @@
                     url: `/api/save_comment`,
                     data: {
                         comment_give: comment_gives,
-                        title_give: "{{ movie._id }}"
+                        id_give: "{{ movie._id }}"
                     },
                     success: function (response) {
                         alert(response["msg"])

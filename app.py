@@ -32,11 +32,16 @@ def main():
         for movie in movies:
             movie_id = movie['_id']
             rmovies = list(db.movie.find({"_id": movie_id}))
-            comments = list(db.comment.find({"movieid": movie_id}, {"_id": False}))
+            tempid = str(movie_id)
+            comments = list(db.comment.find({"movieid": tempid}, {"_id": False}))
+            print("코멘트")
+            print(comments)
             for rmovie in rmovies:
                 rmovie['comments'] = comments
                 rmovie["_id"] = str(rmovie["_id"])
             list_movies.append(rmovies[0])
+            print("dfdfd")
+            print(list_movies)
         result = sorted(list_movies, key=lambda x:len(x['comments']), reverse=True)
         return render_template('index.html', movies=result, user_info=user_info)
     except jwt.ExpiredSignatureError:
@@ -52,7 +57,7 @@ def detail(id):
         user_info = db.users.find_one({"username": payload["id"]})
         movie_info = db.movie.find_one({'_id' : ObjectId(id)})
         print(movie_info)
-        comment_info = list(db.comment.find({'title': id}))
+        comment_info = list(db.comment.find({'movieid': id}))
 
         return render_template("detail.html",  user_info=user_info, movie=movie_info, comments=comment_info)
     except jwt.ExpiredSignatureError:
@@ -68,8 +73,8 @@ def save_comment():
     print(nickname["nickname"])
     # 댓글 저장하기
     comment_receive = request.form["comment_give"]
-    title_receive = request.form["title_give"]
-    doc= {'nickname':nickname["nickname"], 'comment': comment_receive, 'username': payload["id"], 'title': title_receive}
+    id_receive = request.form["id_give"]
+    doc= {'nickname':nickname["nickname"], 'comment': comment_receive, 'username': payload["id"], 'movieid': id_receive}
     db.comment.insert_one(doc)
     return jsonify({'result': 'success', 'msg': '입력완료'})
 
