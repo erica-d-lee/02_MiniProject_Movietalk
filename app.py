@@ -6,7 +6,6 @@ import datetime
 import hashlib
 import jwt
 from datetime import datetime, timedelta
-from selenium import webdriver
 
 from bson import ObjectId
 
