@@ -1,4 +1,4 @@
-# week1_team20
+ # week1_team20 Mini Proejct
 
 # Hangehae 99. (99Days Web Dev Bootcamp) 
 
@@ -11,11 +11,9 @@
 ## Proejct Scopre
 * <details>
   <summary>
-  펼쳐보기
-  </summary>
-    <br>
-
-1. Project Name 
+  Unfold
+    
+    1. Project Name 
 MovieTALK(무비톡)
 
 2. Project Background
@@ -46,7 +44,11 @@ We can share the movie and leave the comments
    -Must use Jinja2 template 
    -Must use JWT authentication
 
-## 결과
+    
+  </summary>
+    <br>
+
+## Result
 * <details>
   <summary>
    Unfold
