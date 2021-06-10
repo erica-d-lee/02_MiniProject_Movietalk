@@ -7,7 +7,13 @@
 
 <br>
  
-##Project Scope 
+
+## Proejct Scopre
+* <details>
+  <summary>
+  펼쳐보기
+  </summary>
+    <br>
 
 1. Project Name 
 MovieTALK(무비톡)
@@ -37,7 +43,8 @@ We can share the movie and leave the comments
    Leave Comment 
    
 4. Requriementes 
-   -Must use 
+   -Must use Jinja2 template 
+   -Must use JWT authentication
 
 ## 결과
 * <details>
