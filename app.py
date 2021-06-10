@@ -16,7 +16,7 @@ app = Flask(__name__)
 SECRET_KEY = 'MOVIETALK'
 
 
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://admin:test@localhost', 27017)
 db = client.dbmovietalk
 
 
