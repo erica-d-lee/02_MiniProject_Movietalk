@@ -1,11 +1,44 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>  Search </title>
+
+        <!-- 구글 폰트 -->
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap" rel="stylesheet">
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <!-- Bulma CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 
-{% block title %} Search {% endblock %}
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+    <style>
+        * {
+            font-family: 'Noto Serif KR', serif;
+        }
+    </style>
 
-{% block script %}
 
-    function find_movie(){
+    <script>
+         function find_movie(){
         let word = $("#input-word").val();
 
         if(word) {
@@ -49,22 +82,22 @@
         window.location.href = "/login"
     }
 
-{% endblock %}
+    </script>
+  
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+</head>
+<body>
 
-{% endblock %}
-
-{% block usercontent %}
-    <span><span style="color: orangered; font-weight: bold;">{{ user_info.username }}</span>님</span>
+<div class="wrap">
+    <div class="banner" onclick="window.location.href = '/'"></div>
+    <div class="user-container">
+     <span><span style="color: orangered; font-weight: bold;">{{ user_info.username }}</span>님</span>
     <div class="button level-item has-text-centered is-sparta is-outlined" aria-label="logout" onclick="sign_out()">
     로그아웃&nbsp;&nbsp;&nbsp;<span class="icon is-small"><i class="fa fa-sign-out" aria-hidden="true"></i></span></div>
-{% endblock %}
+    </div>
 
-{% block content %}
-    <h1 style="color: darkorange; font-weight: bold; font-size: 25px; text-align: center;"> 영화를 추천해주세요 <i class="fa fa-film" aria-hidden="true"></i></h1>
+    <div class="container">
+        <h1 style="color: darkorange; font-weight: bold; font-size: 25px; text-align: center;"> 영화를 추천해주세요 <i class="fa fa-film" aria-hidden="true"></i></h1>
     <hr></hr>
     <p class="important">
 
@@ -76,11 +109,9 @@
     <button type="button" class="btn btn-secondary" style="background-color: orangered; border-color: orangered;" onclick="find_movie()"> 영화 찾기
         <i class="fa fa-search" aria-hidden="true"></i></button>
 
-{% endblock %}
 
-
-{% block content2 %}
-    {% if result %}
+</div>
+{% if result %}
     <div class="container">
 
         {%  for  item  in result['items'] %}
@@ -111,10 +142,7 @@
 
     </div>
     {% endif %}
-{% endblock %}
+</div>
 
-
-
-
-
-
+</body>
+</html>
