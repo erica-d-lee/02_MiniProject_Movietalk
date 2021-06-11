@@ -1,42 +1,71 @@
-# week1_team20
+ # week1_team20 Mini Proejct
 
-# 항해99  Week 1 :  [Movie Talk]
-#### 팀원 : 이동민 , 방민수 , 최지혁 , 김수연
+# Hangehae 99. (99Days Web Dev Bootcamp) 
+
+  Week 1 :  [Movie Talk].  (2021.06.07- 2021.06.10)
+#### Team : 이동민 (Dongmin Lee),  벙민수 (Skyler Bang ), 최지혁 (Jihyuk Choi) , 김수연 (Suyeon Kim)
 
 <br>
  
-1. 프로젝트 제목
 
+## Proejct Scopre
+
+ 1. Project Name 
+     MovieTALK(무비톡)
+
+ 2. Project Background
+
+     Do you want to share your favorite movie with your friends? 
+     Please ask them to join our MovieTalk 
+     We can share the movie and leave the comments 
+
+3. Implemented Features 
+
+    Sign up
+      Create an Account
+         -Check ID
+         -Check PW 
+      Log in
+
+      Log out 
+
+      Search Movie by Title
+
+      Add Movie in to Main Feed
+
+      Check Detail of movie 
+
+      Leave Comment 
  
-
-MovieTALK(무비톡)
-
  
+4. Requriementes 
 
+   -Must use Jinja2 template 
+   
+   -Must use JWT authentication
+
+5. Demo video
+
+ Demonstration Video : https://www.youtube.com/watch?v=8Gbv7yYv2qM
  
-
-2. 간단 설명
-
  
-
-재미있는 영화, 좋아하는 영화를 추천하고 다른 사람들과 함께 나누는 공간입니다.
-
-영화를 골라주시면, 영화 정보와 유튜브 영상 링크가 등록됩니다.
-
-영화에 댓글을 남겨 의견을 공유해 보세요.
-
-마음에 드는 영화를 발견하셨다면, 나만의 리스트에 등록해 보세요!
-
-마이페이지에서 언제든지 찾아볼 수 있습니다.
-
-
-## 결과
-* <details>
-  <summary>
-  펼쳐보기
+ 
+  </details>
+  <br
+    
   </summary>
     <br>
 
-   
+## Detail
+* <details>
+  <summary>
+   Unfold
+  </summary>
+    <br>
+
+    Working on it 
+
   </details>
   <br>
+  
+  
