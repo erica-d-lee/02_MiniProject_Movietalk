@@ -3,7 +3,7 @@
 # Hangehae 99. (99Days Web Dev Bootcamp) 
 
   Week 1 :  [Movie Talk].  (2021.06.07- 2021.06.10)
-#### Team : 이동민 (Dongmin Lee),  벙민수 (Skyler Bang ), 최지혁 (Jihyuk Choi) , 김수연 (Suyeon Kim)
+#### Team : 이동민 (Dongmin Lee),   방민수 (Skyler Bang ), 최지혁 (Jihyuk Choi) , 김수연 (Sooyeon Kim)
 
 <br>
  
@@ -63,7 +63,22 @@
   </summary>
     <br>
 
-    Working on it 
+    Result Pictures
+    ![](pic/login.jpg)  
+ 
+    * ## Frontend
+    * <details>
+        <summary>디자인</summary>
+        <br>
+       
+        ![](img/design4.jpg)    
+        초안 2   
+        <br>
+        ![](img/design5.png)   
+        초안 1 발전   
+        
+        </details>
+        <br>
 
   </details>
   <br>
