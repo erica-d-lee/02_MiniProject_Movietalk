@@ -64,7 +64,21 @@
     <br>
 
     Result Pictures
-    ![](pic/login.jpg)  
+    ![](pic/login.png) 
+    Login Page 
+    <br>
+    ![](pic/main.png)  
+     Main Page  with dummy DB 
+     <br>
+    ![](pic/main2.png)  
+      Main Page  with actual DB if the movie is added from the serach page
+     <br>
+    ![](pic/search.png)  
+       Search page.  serach the movie from Naver Movie and can add to the main page
+     <br>
+    ![](pic/singup.png)  
+        Singup page
+     <br>
  
     * ## Frontend
     * <details>
